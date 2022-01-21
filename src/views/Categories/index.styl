@@ -1,0 +1,61 @@
+.categories {
+  padding 1.25rem
+  display flex
+  flex-wrap wrap
+  .category {
+    // background-image url('./3.jpg')
+    background-repeat no-repeat
+    width 31.33%
+    height 180px
+    // padding-bottom 200
+    background-size 100% auto
+    box-shadow 0 0.5rem 1rem #8b8b8b
+    position relative
+    margin 0.875rem 1%
+    transition all 0.2s
+    border-radius 10px
+    overflow hidden
+    &:hover {
+      transform translateY(-5px)
+    }
+    .opacity {
+      position absolute
+      background rgba(0, 0, 0, 0.2)
+      top 0
+      bottom 0
+      left 0
+      right 0
+      cursor pointer
+      .name {
+        background rgba(255, 255, 255, 0.6)
+        position absolute
+        top 0
+        left 0
+        padding 0.625rem
+        font-size 18px
+      }
+      .date {
+        background rgba(255, 255, 255, 0.6)
+        position absolute
+        right 0
+        bottom 0
+        padding 0.3125rem
+        font-size 1.125rem
+        font-weight normal
+        color #555
+      }
+    }
+  }
+}
+// width小于768px
+@media screen and (max-width 768px) {
+  .categories {
+    .category {
+      width 100%
+      height 0
+      padding-bottom 30%
+      background-position center center // 居中
+      background-size cover
+    }
+  }
+}

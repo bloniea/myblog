@@ -1,0 +1,151 @@
+.home {
+  padding 0 0.625rem
+  // height 0
+  // padding-bottom 80vh
+  .article {
+    .article-box {
+      border-radius 1.25rem
+      background rgba(255, 255, 255, 0.7)
+      margin 2.5rem 0
+      box-shadow 0 0.5rem 1rem #8b8b8b
+      position relative
+      overflow hidden
+      cursor pointer
+      .article-message {
+        .more {
+          i {
+            font-size 2.5rem
+            &:hover {
+              color #B854D4
+            }
+          }
+        }
+        .article-info {
+          color #888
+        }
+      }
+      .article-img {
+        overflow hidden
+        .img {
+          width 100%
+          // height 100%
+          // object-fit cover
+          transition all 0.3s
+          cursor pointer
+          &:hover {
+            transform scale(1.15)
+          }
+        }
+      }
+    }
+  }
+  // 大于768
+  @media screen and (min-width 769px) {
+    .article-app {
+      display none
+    }
+    .article-pc {
+      .article-box {
+        transition all 0.2s
+        height 260px
+        &:hover {
+          transform translateY(-5px)
+        }
+        // border 1px solid red
+        display flex
+        overflow hidden
+        .article-message {
+          width 45%
+          // border 1px solid blue
+          margin 1.25rem
+          position relative
+          .article-info {
+            position absolute
+            bottom 0
+            font-size 0.875rem
+            width 100%
+            display flex
+            justify-content right
+            div {
+              margin 0 5px
+            }
+            .info-box {
+              position relative
+            }
+          }
+          .article-title {
+            overflow hidden
+            text-overflow ellipsis
+            display -webkit-box
+            -webkit-line-clamp 2
+            -webkit-box-orient vertical
+            cursor pointer
+            &:hover {
+              color #B854D4
+            }
+          }
+          .article-content {
+            // 多行末尾显示三点
+            overflow hidden
+            text-overflow ellipsis
+            display -webkit-box
+            -webkit-line-clamp 3
+            -webkit-box-orient vertical
+            // font-size 18px
+          }
+        }
+        .article-img {
+          // border-radius 20px
+          overflow hidden
+          width 55%
+          // border 1px solid green
+          .img {
+            height 100%
+          }
+        }
+      }
+    }
+  }
+  // 小于768
+  @media screen and (max-width 768px) {
+    .article-pc {
+      display none
+    }
+    .article-app {
+      .article-box {
+        // height 0
+        // padding-bottom 90%
+        .article-message {
+          padding 0 1.25rem
+          .article-title {
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
+          }
+          .more {
+            padding-bottom 0.625rem
+          }
+          .article-content {
+            // 多行末尾显示三点
+            overflow hidden
+            text-overflow ellipsis
+            display -webkit-box
+            -webkit-line-clamp 2
+            -webkit-box-orient vertical
+            // font-size 18px
+          }
+        }
+        .article-info {
+          display flex
+          justify-content space-between
+          padding-bottom 0.625rem
+        }
+        .article-img {
+          height 0
+          border-radius 1.25rem
+          padding-bottom 55%
+        }
+      }
+    }
+  }
+}
