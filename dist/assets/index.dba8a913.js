@@ -1,0 +1,1 @@
+import{g as t,f as c,o as s,c as a}from"./vendor.999b5c7f.js";const l={setup(u){const e=t(),r=c(),o=e.query.keyword;return r.replace({name:"SearchDetail",query:{keyword:o}}),(n,p)=>(s(),a("div"))}};export{l as default};
