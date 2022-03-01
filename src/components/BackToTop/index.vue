@@ -68,5 +68,8 @@ body {
     transition all 0.3s
     cursor pointer
   }
+  @media screen and (max-width 768px) {
+    display none
+  }
 }
 </style>

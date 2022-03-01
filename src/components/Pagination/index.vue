@@ -69,7 +69,7 @@ const next = () => {
 .pagination {
   display flex
   justify-content center
-  margin 20px 0
+  padding 20px 0
   div {
     padding 15px 30px
     // margin 10px

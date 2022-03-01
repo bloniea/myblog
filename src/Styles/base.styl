@@ -63,3 +63,34 @@ html, body {
   border-radius 10px
   background-image linear-gradient(#B854D4, #e66465)
 }
+.shadow {
+  box-shadow 6px 6px 5px rgba(0, 0, 0, 0.12)
+}
+.bg-shadow {
+  box-shadow 6px 6px 5px rgba(0, 0, 0, 0.12)
+  transition all 0.2s
+  @media screen and (min-width 769px) {
+    &:hover {
+      transform translateY(-5px)
+      box-shadow 8px 8px 5px rgba(0, 0, 0, 0.2)
+    }
+  }
+}
+.special {
+  color $baseColor
+}
+a {
+  color $baseColor
+  text-decoration none
+}
+.el-button {
+  &:hover {
+    color $baseColor
+  }
+  $:active {
+    color $baseColor
+  }
+  &:focus {
+    color $baseColor
+  }
+}

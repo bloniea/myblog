@@ -10,7 +10,7 @@
 
     <div class="categories">
       <div
-        class="category"
+        class="category bg-shadow"
         v-for="category in categoryData.categories"
         :key="category.id"
         @click="toDetail(category.id)"
@@ -18,7 +18,7 @@
       >
         <!-- 半透明层 -->
         <div class="opacity">
-          <div class="name">
+          <div class="name  categoty-item-name">
             {{category.cat_name}}
           </div>
           <div class="date">

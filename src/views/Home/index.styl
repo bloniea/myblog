@@ -7,7 +7,7 @@
       border-radius 1.25rem
       background rgba(255, 255, 255, 0.7)
       margin 2.5rem 0
-      box-shadow 0 0.5rem 1rem #8b8b8b
+      // box-shadow 0 0.5rem 1rem #8b8b8b
       position relative
       overflow hidden
       cursor pointer
@@ -22,6 +22,11 @@
         }
         .article-info {
           color #888
+        }
+        .category {
+          &:hover {
+            color #a73ec9
+          }
         }
       }
       .article-img {
@@ -46,11 +51,7 @@
     }
     .article-pc {
       .article-box {
-        transition all 0.2s
         height 260px
-        &:hover {
-          transform translateY(-5px)
-        }
         // border 1px solid red
         display flex
         overflow hidden
@@ -137,8 +138,11 @@
         }
         .article-info {
           display flex
-          justify-content space-between
+          // justify-content space-between
           padding-bottom 0.625rem
+          div {
+            padding-right 20px
+          }
         }
         .article-img {
           height 0

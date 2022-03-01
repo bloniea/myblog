@@ -14,7 +14,9 @@ import Copyright from '@/components/Copyright/index.vue'
     <Nav />
     <!-- 主体 -->
     <main>
+
       <router-view />
+
     </main>
     <!-- 回到顶部 -->
     <BackToTop></BackToTop>
@@ -32,7 +34,7 @@ import Copyright from '@/components/Copyright/index.vue'
 }
 main {
   width 800px
-  margin 20px auto
+  margin 0px auto
   @media screen and (max-width 834px) {
     width 100%
   }

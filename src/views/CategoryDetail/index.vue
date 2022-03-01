@@ -1,62 +1,27 @@
 <template>
   <Loading v-if="loading"></Loading>
+
   <MyContainer v-else>
     <div class="category-detail">
       <div class="title">
-        Category: <span class="cate-name">{{data.cat_name}} <i
+        <span> Category:</span>
+        <span class="cate-name">{{data.cat_name}} <i
             class="iconfont iconclose"
             @click="last"
           ></i> </span>
       </div>
-      <article
-        v-for="article in data.articles"
-        :key="article.id"
-      >
-        <div class="article-img">
-          <img
-            :src="article.img_url"
-            alt=""
-          >
-        </div>
-        <div class="article-message">
-          <h3 class="article-title">
-            {{article.title}}
-          </h3>
-          <div
-            class="article-content"
-            v-html="mdToHtml(article.content,'title')"
-          >
-          </div>
-          <div class="more">
-            <i class="iconfont iconmore"></i>
-          </div>
-          <div class="article-info">
-            <div class="date">
-              <span class="iconfont icondate"></span>
-              {{formatDate(article.created_at)}}
-            </div>
-            <div
-              class="label"
-              v-if="article.labels[0]"
-            >
-              <span class="iconfont iconlabel"></span>
-              {{article.labels[0]}}
-            </div>
-            <div class="category">
-              <span class="iconfont iconfenlei"></span>
-              {{article.category_name}}
-            </div>
-
-          </div>
-        </div>
-      </article>
+      <ArticleList
+        :articles="data.articles"
+        @toArticleDetail="toArticleDetail"
+      ></ArticleList>
+      <Pagination
+        :pagesize="data.req.pagesize"
+        :pagenum="data.req.pagenum"
+        :total="data.total"
+        @changePage="changePage"
+      ></Pagination>
     </div>
-    <Pagination
-      :pagesize="data.req.pagesize"
-      :pagenum="data.req.pagenum"
-      :total="data.total"
-      @changePage="changePage"
-    ></Pagination>
+
   </MyContainer>
 
 </template>
@@ -66,8 +31,9 @@ import { reactive } from '@vue/reactivity'
 import { useRoute, useRouter } from 'vue-router'
 import MyContainer from '@/components/MyContainer/index.vue'
 import Loading from '@/components/Loading/index.vue'
+import ArticleList from '@/components/ArticleList/index.vue'
 import { getCurrentInstance, ref } from 'vue'
-import { mdToHtml, formatDate } from '@/comm/function.js'
+
 import Pagination from '@/components/Pagination/index.vue'
 const router = useRouter()
 const route = useRoute()
@@ -103,6 +69,10 @@ getCategoryDetail()
 const changePage = page => {
   data.req.pagenum = page
   getCategoryDetail()
+}
+
+const toArticleDetail = (id) => {
+  router.push({ name: 'ArticleDetail', params: { id: id } })
 }
 </script>
 

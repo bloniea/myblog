@@ -1,16 +1,23 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 const Home = () => import('../views/Home/index.vue')
 const Categories = () => import('../views/Categories/index.vue')
 const CategoryDetail = () => import('../views/CategoryDetail/index.vue')
 const ArticleDetail = () => import('../views/ArticleDetail/index.vue')
+const SearchDetail = () => import('../views/SearchDetail/index.vue')
+const ReloadSearch = () => import('../views/ReloadSearch/index.vue')
+const Refresh = () => import('../views/Refresh/index.vue')
+const Me = () => import('../views/Me/index.vue')
+const About = () => import('../views/About/index.vue')
+const Friends = () => import('../views/Friends/index.vue')
+const NotFound = () => import('../views/NotFound/index.vue')
 
 const routes = [
   {
     path: '/',
-    redirect: '/Home'
+    redirect: '/home'
   },
   {
-    path: '/Home',
+    path: '/home',
     name: 'Home',
     component: Home
   },
@@ -29,11 +36,55 @@ const routes = [
     path: '/article/:id',
     name: 'ArticleDetail',
     component: ArticleDetail
+  },
+  {
+    path: '/search',
+    name: 'SearchDetail',
+    component: SearchDetail,
+    meta: {
+      keepAlive: true,
+    }
+  },
+  {
+    path: '/reloadsearch',
+    name: 'ReloadSearch',
+    component: ReloadSearch
+  },
+  {
+    path: '/refresh',
+    name: 'Refresh',
+    component: Refresh
+  },
+  {
+    path: '/me',
+    name: 'Me',
+    component: Me
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
+  },
+  {
+    path: '/friends',
+    name: 'Friends',
+    component: Friends
+  },
+
+  {
+    path: "/404",
+    name: "NotFound",
+    component: NotFound
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/404"
   }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  // history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 })
 

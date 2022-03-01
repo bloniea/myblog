@@ -18,7 +18,8 @@
     "stylus": "^0.56.0",
     "stylus-loader": "^6.2.0",
     "vue": "^3.2.26",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.0.1",

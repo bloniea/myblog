@@ -15,7 +15,7 @@
       <!-- 文字在左，图片在右 -->
 
       <div
-        class="article-box"
+        class="article-box bg-shadow"
         v-if="i % 2 !== 0"
       >
         <div class="article-message">
@@ -24,7 +24,7 @@
           </h3>
           <div
             class="article-content"
-            v-html="mdToHtml(article.content,'title')"
+            v-html="beforeArticle(article.content)"
           >
 
           </div>
@@ -37,14 +37,17 @@
               <span class="iconfont icondate"></span>
               {{formatDate(article.created_at)}}
             </div>
-            <div
+            <!-- <div
               class="label"
               v-if="article.labels[0]"
             >
               <span class="iconfont iconlabel"></span>
               {{article.labels[0]}}
-            </div>
-            <div class="category">
+            </div> -->
+            <div
+              class="category"
+              @click.stop="toCategory(article.category_id)"
+            >
               <span class="iconfont iconfenlei"></span>
               {{article.category_name}}
             </div>
@@ -57,6 +60,14 @@
             class="img"
             fit="cover"
           >
+            <template #error>
+              <div class="image-slot">
+                <el-image
+                  :src="config.defaultImgUrl"
+                  fit="cover"
+                ></el-image>
+              </div>
+            </template>
           </el-image>
           <!-- <img
             :src="article.img_url"
@@ -66,7 +77,7 @@
       </div>
       <!-- 文字在右，图片在左 -->
       <div
-        class="article-box"
+        class="article-box  bg-shadow"
         v-else
       >
         <div class="article-img">
@@ -75,6 +86,14 @@
             class="img"
             fit="cover"
           >
+            <template #error>
+              <div class="image-slot">
+                <el-image
+                  :src="config.defaultImgUrl"
+                  fit="cover"
+                ></el-image>
+              </div>
+            </template>
           </el-image>
         </div>
         <div class="article-message">
@@ -84,7 +103,7 @@
 
           <div
             class="article-content"
-            v-html="mdToHtml(article.content,'title')"
+            v-html="beforeArticle(article.content)"
           >
 
           </div>
@@ -97,14 +116,17 @@
               <span class="iconfont icondate"></span>
               {{formatDate(article.created_at)}}
             </div>
-            <div
+            <!-- <div
               class="label"
               v-if="article.labels[0]"
             >
               <span class="iconfont iconlabel"></span>
               {{article.labels[0]}}
-            </div>
-            <div class="category">
+            </div> -->
+            <div
+              class="category"
+              @click.stop="toCategory(article.category_id)"
+            >
               <span class="iconfont iconfenlei"></span>
               {{article.category_name}}
             </div>
@@ -122,13 +144,22 @@
       :key="i"
       @click="toArticleDetail(article.id)"
     >
-      <div class="article-box">
+      <div class="article-box bg-shadow">
+
         <div class="article-img">
           <el-image
             :src="article.img_url"
             class="img"
             fit="cover"
           >
+            <template #error>
+              <div class="image-slot">
+                <el-image
+                  :src="config.defaultImgUrl"
+                  fit="cover"
+                ></el-image>
+              </div>
+            </template>
           </el-image>
         </div>
         <div class="article-message">
@@ -137,8 +168,9 @@
           </h3>
           <div
             class="article-content"
-            v-html="mdToHtml(article.content,'title')"
+            v-html="beforeArticle(article.content)"
           >
+
           </div>
           <div class="more">
             <i class="iconfont iconmore"></i>
@@ -148,14 +180,17 @@
               <span class="iconfont icondate"></span>
               {{formatDate(article.created_at)}}
             </div>
-            <div
+            <!-- <div
               class="label"
               v-if="article.labels[0]"
             >
               <span class="iconfont iconlabel"></span>
               {{article.labels[0]}}
-            </div>
-            <div class="category">
+            </div> -->
+            <div
+              class="category"
+              @click.stop="toCategory(article.category_id)"
+            >
               <span class="iconfont iconfenlei"></span>
               {{article.category_name}}
             </div>
@@ -181,12 +216,14 @@ import { reactive } from '@vue/reactivity'
 import { ref } from 'vue'
 import { getCurrentInstance, onMounted } from '@vue/runtime-core'
 import { marked } from 'marked'
-import { mdToHtml, formatDate } from '@/comm/function.js'
+import { formatDate, beforeArticle } from '@/comm/function.js'
 const { proxy } = getCurrentInstance()
 import Loading from '@/components/loading/index.vue'
 import Pagination from '@/components/Pagination/index.vue'
 import config from '@/config.js'
 import { useRouter } from 'vue-router'
+import MdToHtml from '@/components/MdToHtml/index.vue'
+
 const loading = ref(true)
 
 const data = reactive({
@@ -218,7 +255,8 @@ const articlesData = reactive({
 const getArticles = async () => {
   loading.value = true
   const { data: res } = await proxy.$axios('/api/articles', { params: articlesData.req })
-  if (res.meta.status != 200) return ElMessage, success(res.meta.msg)
+  // console.log(res)
+  if (res.meta.status != 200) return ElMessage.success(res.meta.msg)
   loading.value = false
   articlesData.articles = res.data.data
   articlesData.total = res.data.total
@@ -235,7 +273,13 @@ const changePage = (val) => {
 // 跳转到文章详情页面
 const router = useRouter()
 const toArticleDetail = (id) => {
+
   router.push({ name: 'ArticleDetail', params: { id: id } })
+}
+
+// 跳转到文章分类详情
+const toCategory = (id) => {
+  router.push({ name: 'CategoryDetail', params: { id: id } })
 }
 </script>
 

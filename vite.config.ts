@@ -30,11 +30,22 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://blogadmin.ccc/api/open/v1/',
+        target: 'https://api.bloniea.xyz/blogAdmin/api/open/v1/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },
-    }
+      '/github_api': {
+        target: 'https://github.com/login/oauth/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/github_api/, '')
+      },
+      '/gitee_api': {
+        target: 'https://gitee.com/oauth/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/gitee_api/, '')
+      },
+    },
+    
   },
 
   

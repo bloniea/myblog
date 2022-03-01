@@ -1,11 +1,15 @@
 <template>
   <footer class="copyright">
-    ©2021 bloniea. All rights reserved.
+    ©{{year}} bloniea. All rights reserved.
   </footer>
 </template>
 
 <script setup>
+import { ref } from '@vue/reactivity'
 
+const nowYear = new Date().getFullYear()
+const year = ref(0)
+year.value = nowYear > 2022 ? 2022 + '-' + nowYear : 2022
 </script>
 
 <style lang="stylus" scoped>
