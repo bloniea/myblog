@@ -4,14 +4,14 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import vitePluginStylusAlias from 'vite-plugin-stylus-alias'
+
 
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
-    vitePluginStylusAlias(),
+
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),
@@ -30,7 +30,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://api.bloniea.xyz/blogAdmin/api/open/v1/',
+        target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
+        // target:'http://localhost:3333/api/open/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },
@@ -81,3 +82,13 @@ export default defineConfig({
 //     }
 //   }
 // }
+
+
+// "@vitejs/plugin-vue": "^2.0.1",
+// "rollup-plugin-external-globals": "^0.6.1",
+// "unplugin-auto-import": "^0.5.11",
+// "unplugin-vue-components": "^0.17.11",
+// "vite": "^2.7.2",
+// "vite-aliases": "^0.8.7",
+// "vite-plugin-stylus-alias": "^1.1.1",
+// "vue-md-loader": "^2.0.1"

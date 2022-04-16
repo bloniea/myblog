@@ -4,7 +4,8 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
 // 格式化日期
 export const formatDate = (d) => {
-  let date = new Date(d * 1000).toDateString()
+  d = d.toString().length == 10 ? d * 1000 : d
+  let date = new Date(d).toDateString()
   let dateArr = date.split(' ')
   return dateArr[1] + '. ' + dateArr[2] + '. ' + dateArr[3]
 }
@@ -16,25 +17,11 @@ export const beforeArticle = (md) => {
   return html
 }
 
-// 图片链接无效显示为默认图
-export const imgExists = (item) => {
-  item.img_url = config.defaultArticleImgUrl
-}
-
-
-export const isLogin = () => {
-  const userinfo = JSON.parse(localStorage.getItem('userinfo'))
-  if (userinfo) {
-    return true
-  } else {
-    return false
-  }
-}
-
 // 获取参数
 export const getParams = code => {
   const type = localStorage.getItem('type')
   const req = {
+    type: type,
     code: code,
     client_id: config.auth[type].client_id,
     redirect_uri: config.auth.redirect_uri,
@@ -67,5 +54,48 @@ export const getVal = (str, val) => {
   if (index > -1) {
     v = indexEnd > -1 ? str.substring(index + val.length, indexEnd) : str.substring(index + val.length)
     return v
+  }
+}
+// 生成7位随机数
+export const getRandom = () => {
+  let str = ''
+  for (let i = 0, len = 7; i < len; i++) {
+    let num = Math.floor(Math.random() * 10)
+    str += num.toString()
+  }
+  return str
+}
+
+// 获取路由路径
+// 授权登录后跳转至首页，保存path为授权后能进入之前的页面
+export const setRouterPath = () => {
+  let path = window.location.pathname + window.location.search
+  const index = path.indexOf('code=')
+  if (index > -1) {
+    path = path.substring(0, index - 1)
+  }
+  localStorage.setItem('path', path)
+}
+// 进入授权页面方法
+export const toAuth = type => {
+  if (type) {
+    setRouterPath()
+    let req = {}
+    localStorage.setItem('type', type)
+    if (type == 'gitee') {
+      req.client_id = config.auth[type].client_id
+      req.redirect_uri = config.auth.redirect_uri
+      req.response_type = 'code'
+      req.scope = 'user_info'
+    }
+    if (type == 'github') {
+      req.client_id = config.auth[type].client_id
+      req.redirect_uri = encodeURIComponent(window.location.href)
+      req.state = getRandom()
+
+    }
+    const params = formatparams(req)
+    const apiUrl = config.auth[type].oauth_api + '/authorize/'
+    window.location.href = apiUrl + params
   }
 }

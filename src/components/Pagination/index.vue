@@ -71,14 +71,14 @@ const next = () => {
   justify-content center
   padding 20px 0
   div {
-    padding 15px 30px
+    padding 10px 15px
     // margin 10px
-    background #CD93E4
+    background #9c27b0
     color #fff
     cursor pointer
     transition all 0.3s
     &:hover {
-      background pink
+      background #CD93E4
     }
   }
 }

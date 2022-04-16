@@ -9,8 +9,8 @@
   <article
     v-else
     v-for="article in articles"
-    :key="article.id"
-    @click="toArticleDetail(article.id)"
+    :key="article._id"
+    @click="toArticleDetail(article._id)"
     class="bg-shadow"
   >
     <div class="article-img">
@@ -19,12 +19,14 @@
         alt=""
       >-->
       <el-image
+        lazy
         :src="article.img_url"
         fit="cover"
       >
         <template #error>
           <div class="image-slot">
             <el-image
+              lazy
               :src="config.defaultImgUrl"
               fit="cover"
             ></el-image>
@@ -57,9 +59,12 @@
           <span class="iconfont iconlabel"></span>
           {{article.labels[0]}}
         </div> -->
-        <div class="category">
+        <div
+          class="category"
+          @click.stop="toCategory(article.category._id,article.category.cat_name)"
+        >
           <span class="iconfont iconfenlei"></span>
-          {{article.category_name}}
+          {{article.category.cat_name}}
         </div>
       </div>
     </div>
@@ -72,6 +77,8 @@
 import { beforeArticle, formatDate } from '@/comm/function.js'
 import { onMounted, ref } from '@vue/runtime-core'
 import config from '@/config'
+import { useRouter } from 'vue-router'
+
 const props = defineProps({
   articles: Array
 })
@@ -81,6 +88,10 @@ onMounted(() => {
 const emit = defineEmits(['toArticleDetail'])
 const toArticleDetail = (id) => {
   emit('toArticleDetail', id)
+}
+const router = useRouter()
+const toCategory = (id, name) => {
+  router.push({ name: 'CategoryDetail', params: { id: id }, query: { name: name } })
 }
 </script>
 

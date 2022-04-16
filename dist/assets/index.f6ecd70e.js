@@ -1,0 +1,1 @@
+import{f as o,o as s,c as a}from"./vendor.bee95a75.js";const u={setup(r){const e=o(),t=localStorage.getItem("path");return t?e.push(t):e.push({name:"Home"}),(c,p)=>(s(),a("div"))}};export{u as default};

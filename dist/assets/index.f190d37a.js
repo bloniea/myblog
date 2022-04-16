@@ -1,1 +1,0 @@
-import{_ as s,c as o}from"./index.2e28db02.js";import{o as _,c as a,e,u as c}from"./vendor.999b5c7f.js";const n={class:"loading"},t={class:"loading-box"},d=["src"],r={setup(i){return(l,p)=>(_(),a("div",n,[e("div",t,[e("img",{class:"loading-gif",src:c(o).loading},null,8,d)])]))}};var u=s(r,[["__scopeId","data-v-0d5fb24b"]]);export{u as L};

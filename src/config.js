@@ -20,10 +20,13 @@ const config = {
       token: 'access_token',
       api: 'https://api.github.com/'
     },
+    // redirect_uri: 'http://localhost:3000/',
     redirect_uri: 'https://bloniea.xyz/',
   },
   avatar_error: 'https://cloud.bloniea.xyz/images/avatar_error.png',
   avatar_default: 'https://cloud.bloniea.xyz/images/default_avatar.png',
+  avatar_img: 'https://cloud.bloniea.xyz/images/avatar.png',
+  default_img: 'https://cloud.bloniea.xyz/images/QQ202202112105073c3b326c7ae7c45a.png',
   aboutTitles: [
     { title: 'bloniea' },
     { title: '百合控' },
@@ -34,6 +37,10 @@ const config = {
     { url: 'https://gitee.com/bloniea', img_url: 'https://cloud.bloniea.xyz/images/gitee.png' },
     { url: 'tencent://message/?uin=2032580075&Site=bloniea&Menu=yes', img_url: 'https://cloud.bloniea.xyz/images/QQ.png' },
     { url: 'http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=tdHQ2dzG3dTZ2sPQ2czM2vXExJvW2tg', img_url: 'https://cloud.bloniea.xyz/images/Email.png' },
+  ],
+  tools: [
+    { img_url: "https://cloud.bloniea.xyz/images/1000-1.jpg", router_name: "Reg", title: "正则表达式", subtitle: "在线测试正则表达式" },
+    { img_url: "https://cloud.bloniea.xyz/images/1000-2.jpg", router_name: "Qrcode", title: "二维码生成", subtitle: "在线生成二维码" },
   ]
 
 }

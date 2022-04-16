@@ -7,12 +7,22 @@
     background-repeat no-repeat
     width 31.33%
     height 180px
-    // padding-bottom 200
-    background-size 100% auto
+    background-size contain
     position relative
     margin 0.875rem 1%
     border-radius 10px
     overflow hidden
+    .img {
+      position absolute
+      top 0
+      left 0
+      right 0
+      bottom 0
+      .el-image {
+        height 100%
+        width 100%
+      }
+    }
     .opacity {
       position absolute
       background rgba(0, 0, 0, 0.2)

@@ -27,6 +27,7 @@ import ArticleList from '@/components/ArticleList/index.vue'
 import { reactive, ref, computed, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { getStarsApi } from '@/comm/oauthFetch'
 const { proxy } = getCurrentInstance()
 const loading = ref(true)
 const store = new useStore()
@@ -46,12 +47,14 @@ const getStars = async () => {
   if (status.value) {
     loading.value = true
     const id = user.value.id
-    const { data: res } = await proxy.$axios.get('/api/stars/' + id, { params: data.req })
-    if (res.meta.status == 200) {
-      data.articles = res.data.data
+    const res = await getStarsApi(data.req)
+    if (res.status === 200 && res.ok) {
+      const articles = res.data.data.map(item => { return item.article })
+      data.articles = articles
       data.total = res.data.total
       loading.value = false
     }
+
   } else {
     router.push('/home')
   }

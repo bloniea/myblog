@@ -12,10 +12,15 @@
       <div
         class="category bg-shadow"
         v-for="category in categoryData.categories"
-        :key="category.id"
-        @click="toDetail(category.id)"
-        :style="`background-image:url(${category.img_url})`"
+        :key="category._id"
+        @click="toDetail(category._id,category.cat_name)"
       >
+        <div class="img">
+          <el-image
+            :src="category.img_url"
+            fit="cover"
+          ></el-image>
+        </div>
         <!-- 半透明层 -->
         <div class="opacity">
           <div class="name  categoty-item-name">
@@ -46,6 +51,7 @@ import MyContainer from '@/components/MyContainer/index.vue'
 import { getCurrentInstance, reactive } from '@vue/runtime-core'
 import { formatDate } from '@/comm/function.js'
 import Loading from '@/components/loading/index.vue'
+import { getCategoriesApi } from '@/comm/fetch'
 const route = useRoute()
 const loading = ref(true)
 // let isChildRoute = ref(false)
@@ -60,30 +66,30 @@ const loading = ref(true)
 // isId()
 const router = useRouter()
 // 路由跳转至该分类id详情页
-const toDetail = id => {
-  router.push({ name: 'CategoryDetail', params: { id: id } })
-  // isId()
-  // console.log(route.params)
+const toDetail = (id, cat_name) => {
+  router.push({ name: 'CategoryDetail', params: { id: id }, query: { name: cat_name } })
+
+
 }
 
-const { proxy } = getCurrentInstance()
+
 // 获取分类列表
 const categoryData = reactive({
   categories: [],
   total: 0,
   req: {
-    pagesize: 6,
+    pagesize: 10,
     pagenum: 1
   }
 })
 const getCategories = async () => {
   loading.value = true
-  const { data: res } = await proxy.$axios('/api/categories', { params: categoryData.req })
-  if (res.meta.status != 200) return ElMessage.error(res.meta.msg)
-  categoryData.categories = res.data.data
-  categoryData.total = res.data.total
-  loading.value = false
-  // console.log(res)
+  const res = await getCategoriesApi(categoryData.req)
+  if (res.status === 200 && res.ok) {
+    categoryData.categories = res.data.data
+    categoryData.total = res.data.total
+    loading.value = false
+  }
 }
 getCategories()
 

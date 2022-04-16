@@ -40,7 +40,7 @@ onUnmounted(() => {
 const toTop = () => {
   let top = document.documentElement.scrollTop || document.body.scrollTop
   let timer = setInterval(() => {
-    document.body.scrollTop = document.documentElement.scrollTop = top -= 50
+    document.body.scrollTop = document.documentElement.scrollTop = top -= 100
     if (top <= 0) {
       clearInterval(timer)
     }

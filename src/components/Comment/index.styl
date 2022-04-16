@@ -14,8 +14,14 @@
     cursor pointer
   }
   .comments-box {
-    display flex
-    justify-content space-between
+    .tip_login {
+      display flex
+      justify-content center
+    }
+    .comment_form {
+      display flex
+      justify-content space-between
+    }
     .input {
       width 90%
       margin-top 7px
@@ -29,6 +35,13 @@
         background $baseColor
         padding 0 5px
         margin-bottom 20px
+        .close {
+          font-size 13px
+          &:hover {
+            color #fff
+            cursor pointer
+          }
+        }
       }
       .comments-input {
         textarea {
@@ -106,7 +119,7 @@
     .child-comment {
       display flex
       justify-content space-between
-      padding-left 70px
+      padding-left 11%
       margin 10px 0
       .to_user_info {
         margin-left 20px

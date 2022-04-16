@@ -1,1 +1,0 @@
-import{f as o,o as s,c as r}from"./vendor.999b5c7f.js";const u={setup(a){const e=o(),t=localStorage.getItem("path");return t?e.push(t):e.push({name:"Home"}),(c,n)=>(s(),r("div"))}};export{u as default};

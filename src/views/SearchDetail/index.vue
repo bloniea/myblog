@@ -4,7 +4,7 @@
   <MyContainer v-else>
     <div class="serach-detail">
       <div class="title">
-        <span>Search:</span>
+        <span>Search: <span class="special">{{data.req.keyword}}</span> </span>
         <span class="keyword">{{data.req.query}}</span>
       </div>
       <ArticleList
@@ -29,7 +29,7 @@ import Loading from '@/components/Loading/index.vue'
 import { computed, reactive } from '@vue/reactivity'
 import { getCurrentInstance, onActivated, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-
+import { getArticlesApi } from '@/comm/fetch'
 const route = useRoute()
 const loading = ref(false)
 const keyword = computed(() => route.query.keyword)
@@ -37,20 +37,22 @@ const data = reactive({
   articles: [],
   req: {
     pagenum: 1,
-    pagesize: 2,
-    query: keyword.value
+    pagesize: 10,
+    keyword: keyword.value
   },
   total: 0
 })
 
-const { proxy } = getCurrentInstance()
+
 const getArticles = async () => {
   loading.value = true
-  const { data: res } = await proxy.$axios.get('/api/articles', { params: data.req })
-  if (res.meta.status != 200) ElMessage.error(res.meta.msg)
-  loading.value = false
-  data.articles = res.data.data
-  data.total = res.data.total
+  const res = await getArticlesApi(data.req)
+  if (res.status === 200 && res.ok) {
+    loading.value = false
+    data.articles = res.data.data
+    data.total = res.data.total
+  }
+
 }
 
 onMounted(() => {

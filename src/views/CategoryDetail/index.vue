@@ -33,34 +33,36 @@ import MyContainer from '@/components/MyContainer/index.vue'
 import Loading from '@/components/Loading/index.vue'
 import ArticleList from '@/components/ArticleList/index.vue'
 import { getCurrentInstance, ref } from 'vue'
-
+import { getArticlesApi } from '@/comm/fetch'
 import Pagination from '@/components/Pagination/index.vue'
 const router = useRouter()
 const route = useRoute()
 const loading = ref(true)
 const last = () => {
-  router.go(-1)
+  router.push({ name: 'Categories' })
 }
-const { proxy } = getCurrentInstance()
+
 const data = reactive({
   articles: [],
   cat_name: '',
   req: {
     pagesize: 2,
-    pagenum: 1
+    pagenum: 1,
+    category_id: null
   },
   total: 0
 })
 // 根据分类id获取该分类发文章
 const getCategoryDetail = async () => {
   loading.value = true
+  data.cat_name = route.query.name
   const id = route.params.id
-  const { data: res } = await proxy.$axios.get('/api/category/' + id, { params: data.req })
-  if (res.meta.status == 200) {
+  data.req.category_id = id
+  const res = await getArticlesApi(data.req)
+  if (res.status === 200 && res.ok) {
     data.articles = res.data.data
-    data.cat_name = res.data.cat_name
+
     data.total = res.data.total
-    // console.log(res)
     loading.value = false
   }
 }

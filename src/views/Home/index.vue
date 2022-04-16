@@ -8,9 +8,8 @@
     <article
       class="article article-pc"
       v-for="(article,i) in articlesData.articles"
-      :key="article.id"
-      :ref="setItemRef"
-      @click="toArticleDetail(article.id)"
+      :key="article._id"
+      @click="toArticleDetail(article._id)"
     >
       <!-- 文字在左，图片在右 -->
 
@@ -46,23 +45,28 @@
             </div> -->
             <div
               class="category"
-              @click.stop="toCategory(article.category_id)"
+              @click.stop="toCategory(article.category_id,article.category.cat_name)"
             >
               <span class="iconfont iconfenlei"></span>
-              {{article.category_name}}
+              {{article.category.cat_name}}
             </div>
 
           </div>
         </div>
         <div class="article-img">
           <el-image
+            lazy
             :src="article.img_url"
             class="img"
             fit="cover"
           >
             <template #error>
-              <div class="image-slot">
+              <div
+                class="image-slot"
+                style="height:100%"
+              >
                 <el-image
+                  lazy
                   :src="config.defaultImgUrl"
                   fit="cover"
                 ></el-image>
@@ -80,8 +84,12 @@
         class="article-box  bg-shadow"
         v-else
       >
-        <div class="article-img">
+        <div
+          class="article-img "
+          style="height:100%"
+        >
           <el-image
+            lazy
             :src="article.img_url"
             class="img"
             fit="cover"
@@ -89,6 +97,7 @@
             <template #error>
               <div class="image-slot">
                 <el-image
+                  lazy
                   :src="config.defaultImgUrl"
                   fit="cover"
                 ></el-image>
@@ -125,10 +134,10 @@
             </div> -->
             <div
               class="category"
-              @click.stop="toCategory(article.category_id)"
+              @click.stop="toCategory(article.category_id,article.category.cat_name)"
             >
               <span class="iconfont iconfenlei"></span>
-              {{article.category_name}}
+              {{article.category.cat_name}}
             </div>
 
           </div>
@@ -140,14 +149,15 @@
     <!-- 移动端 <=768 -->
     <article
       class="article article-app"
-      v-for="(article,i) in articlesData.articles"
-      :key="i"
-      @click="toArticleDetail(article.id)"
+      v-for="article in articlesData.articles"
+      :key="article._id"
+      @click="toArticleDetail(article._id)"
     >
       <div class="article-box bg-shadow">
 
         <div class="article-img">
           <el-image
+            lazy
             :src="article.img_url"
             class="img"
             fit="cover"
@@ -155,6 +165,7 @@
             <template #error>
               <div class="image-slot">
                 <el-image
+                  lazy
                   :src="config.defaultImgUrl"
                   fit="cover"
                 ></el-image>
@@ -189,10 +200,10 @@
             </div> -->
             <div
               class="category"
-              @click.stop="toCategory(article.category_id)"
+              @click.stop="toCategory(article.category_id,article.category.cat_name)"
             >
               <span class="iconfont iconfenlei"></span>
-              {{article.category_name}}
+              {{article.category.cat_name}}
             </div>
 
           </div>
@@ -217,36 +228,25 @@ import { ref } from 'vue'
 import { getCurrentInstance, onMounted } from '@vue/runtime-core'
 import { marked } from 'marked'
 import { formatDate, beforeArticle } from '@/comm/function.js'
-const { proxy } = getCurrentInstance()
 import Loading from '@/components/loading/index.vue'
 import Pagination from '@/components/Pagination/index.vue'
 import config from '@/config.js'
 import { useRouter } from 'vue-router'
 import MdToHtml from '@/components/MdToHtml/index.vue'
+import { getArticlesApi } from '@/comm/fetch'
+const { proxy } = getCurrentInstance()
 
 const loading = ref(true)
 
-const data = reactive({
-  divArr: []
-})
-const setItemRef = e => {
-  if (e) {
-    data.divArr.push(e)
-  }
-}
-onMounted(() => {
-  data.divArr.forEach(div => {
-    // console.log(div.offsetTop)
-  })
-})
+
+
 
 // 获取文章列表
 const articlesData = reactive({
   articles: '',
   req: {
     pagesize: 10,
-    pagenum: 1,
-    query: ''
+    pagenum: 1
   },
   total: 0
 
@@ -254,13 +254,16 @@ const articlesData = reactive({
 // 获取文章
 const getArticles = async () => {
   loading.value = true
-  const { data: res } = await proxy.$axios('/api/articles', { params: articlesData.req })
+  // const { data: res } = await proxy.$axios('/api/articles', { params: articlesData.req })
+  const res = await getArticlesApi(articlesData.req)
   // console.log(res)
-  if (res.meta.status != 200) return ElMessage.success(res.meta.msg)
-  loading.value = false
-  articlesData.articles = res.data.data
-  articlesData.total = res.data.total
-  // console.log(articlesData.articles)
+  if (res.status === 200 && res.ok) {
+    loading.value = false
+    articlesData.articles = res.data.data
+    articlesData.total = res.data.total
+    // console.log(articlesData.articles)
+  }
+
 }
 getArticles()
 
@@ -278,8 +281,8 @@ const toArticleDetail = (id) => {
 }
 
 // 跳转到文章分类详情
-const toCategory = (id) => {
-  router.push({ name: 'CategoryDetail', params: { id: id } })
+const toCategory = (id, name) => {
+  router.push({ name: 'CategoryDetail', params: { id: id }, query: { name: name } })
 }
 </script>
 

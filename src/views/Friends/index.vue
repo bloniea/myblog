@@ -14,6 +14,7 @@
         @click="to(friend.url)"
       >
         <el-image
+          lazy
           fit="cover"
           :src="friend.img_url"
         ></el-image>
@@ -40,6 +41,7 @@ import MyContainer from '@/components/MyContainer/index.vue'
 import { getCurrentInstance, reactive, ref } from 'vue'
 import Loading from '@/components/loading/index.vue'
 import config from '@/config'
+import { getFriendsApi } from '@/comm/fetch'
 const { proxy } = getCurrentInstance()
 const friends = reactive({
   list: []
@@ -47,9 +49,12 @@ const friends = reactive({
 const loading = ref(false)
 const getFriends = (async () => {
   loading.value = true
-  const { data: res } = await proxy.$axios.get('/api/friends')
-  friends.list = res.data
-  loading.value = false
+  const res = await getFriendsApi()
+  if (res.status === 200 && res.ok) {
+    friends.list = res.data.data
+    loading.value = false
+  }
+
 })()
 
 const to = url => {
@@ -68,15 +73,16 @@ const to = url => {
   .friends {
     margin-top 20px
     display flex
-    justify-content space-between
+    // justify-content space-between
     flex-wrap wrap
     .friends-item {
-      width 30%
-      height 100px
+      width 32%
+      height 120px
+      margin 0 (4% / 6) 20px (4% / 6)
       cursor pointer
       position relative
       overflow hidden
-      margin-bottom 20px
+      // margin-bottom 20px
       .el-image {
         width 100%
         height 100%

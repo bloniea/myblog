@@ -1,5 +1,6 @@
 <template>
   <nav>
+
     <div class="nav">
       <div class="title">
         <div
@@ -67,8 +68,9 @@
               :size="50"
               :src="config.avatar_default"
               v-else
+              vLoading
+              ref="avatarLoad"
             >
-
               <img :src="config.avatar_error" />
             </el-avatar>
 
@@ -107,6 +109,7 @@
               width="30%"
               center
               custom-class="login"
+              @close="closeLogin"
             >
               <div class="login-btns">
                 <div class="gitee">
@@ -119,7 +122,7 @@
               </div>
               <template #footer>
                 <span class="login-footer">
-                  <el-button @click="isShowLoginDialog">Cancel</el-button>
+                  <el-button @click="closeLogin">Cancel</el-button>
                 </span>
               </template>
             </el-dialog>
@@ -131,19 +134,20 @@
               width="70%"
               center
               custom-class="login"
+              @close="closeLogin"
             >
               <div class="login-btns">
                 <div class="gitee">
-                  <el-button>gitee</el-button>
+                  <el-button @click="gitee_github('gitee')">gitee</el-button>
                 </div>
                 <div class="github">
-                  <el-button>github</el-button>
+                  <el-button @click="gitee_github('github')">github</el-button>
                 </div>
 
               </div>
               <template #footer>
                 <span class="login-footer">
-                  <el-button @click="isShowLoginDialog">Cancel</el-button>
+                  <el-button @click="closeLogin">Cancel</el-button>
                 </span>
               </template>
             </el-dialog>
@@ -162,29 +166,30 @@ import { computed, getCurrentInstance, onMounted, reactive, ref, watch } from 'v
 import { useRoute, useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import config from '@/config.js'
-import { isLogin, formatparams, getVal, getParams } from '@/comm/function.js'
+import { formatparams, getVal, getParams, toAuth } from '@/comm/function.js'
 import { useStore } from 'vuex'
-import { ElLoading, ElMessageBox } from 'element-plus'
-// import Login from '@/components/Login/index.vue'
+import { ElLoading } from 'element-plus'
+import { getUserApi } from '@/comm/oauthFetch'
+
 const keyword = ref('')
 const navShow = ref(true)
-const { proxy } = getCurrentInstance()
+
 const menus = reactive([
-  { id: 1, label: '主页', name: 'home', icon: 'iconhome', class: 'home' },
-  // { id: 2, label: '归档', icon: 'iconapple' },
+  { id: 1, label: '主页', name: 'Home', icon: 'iconhome', class: 'home' },
+  { id: 2, label: '归档', name: 'Archive', icon: 'iconapple' },
   { id: 3, label: '分类', name: 'Categories', icon: 'icon14', class: 'categories' },
   // { id: 4, label: '标签', icon: 'iconpen' },
   { id: 5, label: '友链', name: 'Friends', icon: 'iconlove', class: 'friends' },
+  { id: 6, label: '工具', name: 'Tool', icon: 'iconguanyu', class: 'tool' },
   { id: 6, label: '关于', name: 'About', icon: 'iconguanyu', class: 'about' }
 ])
 const navNameShow = ref(false)
-
 
 // 路由跳转
 const router = useRouter()
 const toPage = (name) => {
   navNameShow.value = !navNameShow.value
-  router.push('/' + name)
+  router.push({ name: name })
 }
 // app 端显示隐藏菜单
 const shouNav = () => {
@@ -205,14 +210,7 @@ const listenEvent = (() => {
   document.addEventListener('scroll', fun)
   document.removeEventListener('scroll', fun, true)
 })()
-const clearLoaclstorage = () => {
-  localStorage.removeItem('refresh_token')
-  localStorage.removeItem('code')
-  localStorage.removeItem('access_token')
-  localStorage.removeItem('type')
-  localStorage.removeItem('userinfo')
 
-}
 const route = useRoute()
 const getArticles = () => {
   const name = ref('')
@@ -226,61 +224,27 @@ const getArticles = () => {
   router.push({ name: 'ReloadSearch', query: { keyword: keyword.value } })
 }
 
+
+
 const store = new useStore()
 // 登录
-const loginDialogVisible = ref(false)
+const loginDialogVisible = computed({
+  get () {
+    return store.state.isShowLogin
+  },
+  set (v) {
+    store.commit("setIsShowLogin", v)
+  }
+})
+
 const gitee_github = type => {
   // 进入授权页面
   toAuth(type)
-  console.log(type)
-}
-// 生成7位随机数
-const getRandom = () => {
-  let str = ''
-  for (let i = 0, len = 7; i < len; i++) {
-    let num = Math.floor(Math.random() * 10)
-    str += num.toString()
-  }
-  return str
-}
 
-// 获取路由路径
-const setRouterPath = () => {
-  let path = window.location.pathname + window.location.search
-  const index = path.indexOf('code=')
-  if (index > -1) {
-    path = path.substring(0, index - 1)
-  }
-  localStorage.setItem('path', path)
 }
-// 进入授权页面方法
-const toAuth = type => {
-  console.log(type)
-  if (type) {
-    setRouterPath()
-    let req = {}
-    localStorage.setItem('type', type)
-    // let apiUrl = ''
-    if (type == 'gitee') {
-      req.client_id = config.auth[type].client_id
-      req.redirect_uri = config.auth.redirect_uri
-      req.response_type = 'code'
-      req.scope = 'user_info'
-      // apiUrl = config.auth['type'].oauth_api+'/authorize/'
-    }
-    if (type == 'github') {
-      req.client_id = config.auth[type].client_id
-      req.redirect_uri = encodeURIComponent(window.location.href)
-      req.state = getRandom()
-      // apiUrl = '/github_api/authorize/'
-    }
-    const params = formatparams(req)
-    const apiUrl = config.auth[type].oauth_api + '/authorize/'
-    // console.log(apiUrl + params)
-    window.location.href = apiUrl + params
-  }
+const closeLogin = () => {
+  store.commit('setIsShowLogin', false)
 }
-
 // 授权后返回执行,保存code并刷新当前页面使url不显示code值
 const saveCode = (() => {
   const url = window.location.href
@@ -291,113 +255,46 @@ const saveCode = (() => {
   }
 
 })()
-
+// element 的需要v-loading的dom
+const avatarLoad = ref(null)
 // 获取token
-const getToken = (() => {
+const oauth = async () => {
   const code = localStorage.getItem('code')
   if (code && code != null) {
     const params = getParams(code)
-    const type = localStorage.getItem('type')
-    let apiUrl = config.auth[type].oauth_api_p + config.auth[type].token
-    ElMessage({
-      message: '登录中',
-      type: 'info',
-      duration: 0
+    const avatar = ElLoading.service({
+      target: avatarLoad.value.$el,
+      lock: true,
+      background: 'rgba(0, 0, 0, 0.7)',
     })
-    proxy.$axios({
-      url: apiUrl,
-      method: 'post',
-      headers: { Accept: 'application/json' },
-      data: params
-    })
-      .then(async ({ data: res }) => {
-        localStorage.removeItem('code')
-        localStorage.setItem('access_token', res.access_token)
-        localStorage.setItem('refresh_token', res.refresh_token)
-        getUserInfo()
-
-      })
-      .catch(() => {
-        ElMessage.closeAll()
-        ElMessage.error('登录失败，网络超时')
-      })
-  }
-})()
-
-
-// 获取用户信息
-const getUserInfo = () => {
-  const token = localStorage.getItem('access_token')
-  const type = localStorage.getItem('type')
-  if (token && token != '' && type && type != '') {
-    let data = null
-    if (type == 'gitee') {
-      data = { params: { access_token: token } }
-    } else if (type == 'github') {
-      data = { params: { access_token: token }, headers: { Authorization: 'bearer ' + token } }
+    const res = await getUserApi(params)
+    if (res.status === 200 && res.ok) {
+      avatar.close()
+      localStorage.removeItem('code')
+      localStorage.setItem('front_token', res.data.token)
+      localStorage.setItem('front_refresh_token', res.data.refresh_token)
+      localStorage.setItem('front_userinfo', JSON.stringify(res.data.data))
+      store.commit('setStatus', true)
+      store.commit('setUserinfo', res.data.data)
+    } else {
+      avatar.close()
+      localStorage.removeItem('code')
+      ElMessage.error('登录超时,请刷新后再试')
     }
-    proxy.$axios.get(config.auth[type].api + 'user', data)
-      .then(({ data: user }) => {
-        saveUser(user)
-
-      })
-      .catch(async () => {
-        const refresh_token = localStorage.getItem('refresh_token')
-        if (refresh_token && refresh_token != '') {
-          const req = {
-            grant_type: 'refresh_token',
-            refresh_token: refresh_token
-          }
-          const { data: res } = await proxy.$axios.post(config.auth[type].oauth_api + 'token', { params: req })
-          localStorage.setItem('access_token', res.access_token)
-          localStorage.setItem('refresh_token', res.refresh_token)
-          getUserInfo()
-
-        } else {
-          ElMessage.error('登录失效,请重新登录')
-          clearLoaclstorage()
-        }
-      })
-  } else {
-    ElMessage.error('登录失效,请重新登录')
-    clearLoaclstorage()
   }
-
-
 }
-// 保存用户到数据库
-const saveUser = async (user) => {
-  const req = {
-    id: user.id,
-    name: user.name,
-    avatar_url: user.avatar_url,
-    html_url: user.html_url
-  }
-  const { data: res } = await proxy.$axios.post('/api/saveuser', req)
-  if (res.meta.status != 200) {
-    clearLoaclstorage()
-    ElMessage.closeAll()
-    ElMessage.error('网络超时')
-  }
-  localStorage.setItem('userinfo', JSON.stringify(user))
-  store.commit('setStatus', true)
-  store.commit('setUserinfo', user)
+onMounted(() => oauth())
 
-  ElMessage.closeAll()
-  setTimeout(() => {
-    ElMessage.success('登录成功')
-  }, 1500)
-
-
-}
 // 显示登录表单
 const isShowLoginDialog = () => {
-  loginDialogVisible.value = !loginDialogVisible.value
+  store.commit("setIsShowLogin", true)
+  // loginDialogVisible.value = !loginDialogVisible.value
 }
 const logout = () => {
-  clearLoaclstorage()
+  localStorage.removeItem('front_token')
+  localStorage.removeItem('front_refresh_token')
+  localStorage.removeItem('front_userinfo')
   store.commit('setStatus', false)
-  // data.login = false
 }
 
 // 获取登录状态
@@ -405,7 +302,6 @@ const loginStatus = computed(() => store.state.status)
 // 获取用户信息
 const userinfo = computed(() => store.state.userinfo)
 
-const loginLoading = ref(true)
 
 const toMe = () => {
   router.push({ name: 'Me' })

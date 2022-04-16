@@ -8,6 +8,7 @@ import Copyright from '@/components/Copyright/index.vue'
 </script>
 <template>
   <div class="container">
+
     <!--  顶部进度条 -->
     <TopProgress />
     <!-- 导航 -->

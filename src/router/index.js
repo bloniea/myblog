@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 const Home = () => import('../views/Home/index.vue')
+const Archive = () => import('../views/Archive/index.vue')
 const Categories = () => import('../views/Categories/index.vue')
 const CategoryDetail = () => import('../views/CategoryDetail/index.vue')
 const ArticleDetail = () => import('../views/ArticleDetail/index.vue')
@@ -10,6 +11,9 @@ const Me = () => import('../views/Me/index.vue')
 const About = () => import('../views/About/index.vue')
 const Friends = () => import('../views/Friends/index.vue')
 const NotFound = () => import('../views/NotFound/index.vue')
+const Tool = () => import('../views/Tool/index.vue')
+const Reg = () => import('../views/Tool/Reg/index.vue')
+const Qrcode = () => import('../views/Tool/Qrcode/index.vue')
 
 const routes = [
   {
@@ -22,10 +26,14 @@ const routes = [
     component: Home
   },
   {
+    path: '/archive',
+    name: 'Archive',
+    component: Archive
+  },
+  {
     path: '/categories',
     name: 'Categories',
     component: Categories
-
   },
   {
     path: '/category/:id',
@@ -70,7 +78,25 @@ const routes = [
     name: 'Friends',
     component: Friends
   },
-
+  {
+    path: "/tool",
+    name: "Tool",
+    component: Tool,
+    children: [
+      {
+        path: "reg",
+        name: "Reg",
+        component: Reg,
+        meta: { tool: true }
+      },
+      {
+        path: "qrcode",
+        name: "Qrcode",
+        component: Qrcode,
+        meta: { tool: true }
+      }
+    ]
+  },
   {
     path: "/404",
     name: "NotFound",
