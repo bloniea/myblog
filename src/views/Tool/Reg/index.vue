@@ -12,11 +12,7 @@
       </el-col>
       <el-col :span="3">
         <div class="grid-content bg-purple-light">
-          <el-select
-            v-model="fun"
-            class="m-2"
-            placeholder="Select"
-          >
+          <el-select v-model="fun" class="m-2" placeholder="Select">
             <el-option
               v-for="item in funs"
               :key="item.fun"
@@ -39,11 +35,7 @@
       </el-col>
       <el-col :span="20">
         <div class="grid-content">
-          <el-input
-            type="textarea"
-            :rows="3"
-            v-model="str"
-          ></el-input>
+          <el-input type="textarea" :rows="3" v-model="str"></el-input>
         </div>
       </el-col>
     </el-row>
@@ -53,7 +45,7 @@
       </el-col>
       <el-col :span="20">
         <div class="grid-content">
-          <pre>{{result == null ? 'null' : result}}</pre>
+          <pre>{{ result == null ? 'null' : result }}</pre>
         </div>
       </el-col>
     </el-row>
@@ -100,34 +92,36 @@
       <li>?? 重复0次或1次，但尽可能少重复</li>
       <li>{n,m}? 重复n到m次，但尽可能少重复</li>
       <li>{n,}? 重复n次以上，但尽可能少重复</li>
-
     </ul>
   </div>
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
+import { ref } from '@vue/reactivity'
 
 const str = ref('')
 const reg = ref('')
 const result = ref('')
 const fun = ref('match')
 const funs = [
-  { label: "match", fun: "match" },
-  { label: "search", fun: "search" },
-  { label: "test ", fun: "test" },
+  { label: 'match', fun: 'match' },
+  { label: 'search', fun: 'search' },
+  { label: 'test ', fun: 'test' },
 ]
 const submit = () => {
   console.log(fun.value)
-  if (fun.value == "test") {
+  if (fun.value == 'test') {
     let r = eval(reg.value)
     result.value = r.test(str.value)
   } else {
-    let r = eval(reg.value)
-    result.value = str.value[fun.value](r)
+    try {
+      let r = eval(reg.value)
+      result.value = str.value[fun.value](r)
+    } catch (e) {
+      result.value = '语法错误'
+    }
   }
 }
-
 </script>
 
 <style lang="stylus" scoped>
