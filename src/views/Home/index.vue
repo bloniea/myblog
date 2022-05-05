@@ -1,40 +1,30 @@
 <template>
   <Loading v-if="loading" />
-  <div
-    class="home"
-    v-else
-  >
-
+  <div class="home" v-else>
     <article
       class="article article-pc"
-      v-for="(article,i) in articlesData.articles"
+      v-for="(article, i) in articlesData.articles"
       :key="article._id"
       @click="toArticleDetail(article._id)"
     >
       <!-- 文字在左，图片在右 -->
 
-      <div
-        class="article-box bg-shadow"
-        v-if="i % 2 !== 0"
-      >
+      <div class="article-box bg-shadow" v-if="i % 2 !== 0">
         <div class="article-message">
           <h3 class="article-title">
-            {{article.title}}
+            {{ article.title }}
           </h3>
           <div
             class="article-content"
             v-html="beforeArticle(article.content)"
-          >
-
-          </div>
+          ></div>
           <div class="more">
             <i class="iconfont iconmore"></i>
           </div>
           <div class="article-info">
-
             <div class="date">
               <span class="iconfont icondate"></span>
-              {{formatDate(article.created_at)}}
+              {{ formatDate(article.created_at) }}
             </div>
             <!-- <div
               class="label"
@@ -45,26 +35,19 @@
             </div> -->
             <div
               class="category"
-              @click.stop="toCategory(article.category_id,article.category.cat_name)"
+              @click.stop="
+                toCategory(article.category_id, article.category.cat_name)
+              "
             >
               <span class="iconfont iconfenlei"></span>
-              {{article.category.cat_name}}
+              {{ article.category.cat_name }}
             </div>
-
           </div>
         </div>
         <div class="article-img">
-          <el-image
-            lazy
-            :src="article.img_url"
-            class="img"
-            fit="cover"
-          >
+          <el-image lazy :src="article.img_url" class="img" fit="cover">
             <template #error>
-              <div
-                class="image-slot"
-                style="height:100%"
-              >
+              <div class="image-slot">
                 <el-image
                   lazy
                   :src="config.defaultImgUrl"
@@ -80,20 +63,9 @@
         </div>
       </div>
       <!-- 文字在右，图片在左 -->
-      <div
-        class="article-box  bg-shadow"
-        v-else
-      >
-        <div
-          class="article-img "
-          style="height:100%"
-        >
-          <el-image
-            lazy
-            :src="article.img_url"
-            class="img"
-            fit="cover"
-          >
+      <div class="article-box bg-shadow" v-else>
+        <div class="article-img">
+          <el-image lazy :src="article.img_url" class="img" fit="cover">
             <template #error>
               <div class="image-slot">
                 <el-image
@@ -107,23 +79,20 @@
         </div>
         <div class="article-message">
           <h3 class="article-title">
-            {{article.title}}
+            {{ article.title }}
           </h3>
 
           <div
             class="article-content"
             v-html="beforeArticle(article.content)"
-          >
-
-          </div>
+          ></div>
           <div class="more">
             <i class="iconfont iconmore"></i>
           </div>
           <div class="article-info">
-
             <div class="date">
               <span class="iconfont icondate"></span>
-              {{formatDate(article.created_at)}}
+              {{ formatDate(article.created_at) }}
             </div>
             <!-- <div
               class="label"
@@ -134,15 +103,15 @@
             </div> -->
             <div
               class="category"
-              @click.stop="toCategory(article.category_id,article.category.cat_name)"
+              @click.stop="
+                toCategory(article.category_id, article.category.cat_name)
+              "
             >
               <span class="iconfont iconfenlei"></span>
-              {{article.category.cat_name}}
+              {{ article.category.cat_name }}
             </div>
-
           </div>
         </div>
-
       </div>
     </article>
 
@@ -154,14 +123,8 @@
       @click="toArticleDetail(article._id)"
     >
       <div class="article-box bg-shadow">
-
         <div class="article-img">
-          <el-image
-            lazy
-            :src="article.img_url"
-            class="img"
-            fit="cover"
-          >
+          <el-image lazy :src="article.img_url" class="img" fit="cover">
             <template #error>
               <div class="image-slot">
                 <el-image
@@ -175,21 +138,19 @@
         </div>
         <div class="article-message">
           <h3 class="article-title">
-            {{article.title}}
+            {{ article.title }}
           </h3>
           <div
             class="article-content"
             v-html="beforeArticle(article.content)"
-          >
-
-          </div>
+          ></div>
           <div class="more">
             <i class="iconfont iconmore"></i>
           </div>
           <div class="article-info">
             <div class="date">
               <span class="iconfont icondate"></span>
-              {{formatDate(article.created_at)}}
+              {{ formatDate(article.created_at) }}
             </div>
             <!-- <div
               class="label"
@@ -200,15 +161,15 @@
             </div> -->
             <div
               class="category"
-              @click.stop="toCategory(article.category_id,article.category.cat_name)"
+              @click.stop="
+                toCategory(article.category_id, article.category.cat_name)
+              "
             >
               <span class="iconfont iconfenlei"></span>
-              {{article.category.cat_name}}
+              {{ article.category.cat_name }}
             </div>
-
           </div>
         </div>
-
       </div>
     </article>
     <Pagination
@@ -238,18 +199,14 @@ const { proxy } = getCurrentInstance()
 
 const loading = ref(true)
 
-
-
-
 // 获取文章列表
 const articlesData = reactive({
   articles: '',
   req: {
     pagesize: 10,
-    pagenum: 1
+    pagenum: 1,
   },
-  total: 0
-
+  total: 0,
 })
 // 获取文章
 const getArticles = async () => {
@@ -263,7 +220,6 @@ const getArticles = async () => {
     articlesData.total = res.data.total
     // console.log(articlesData.articles)
   }
-
 }
 getArticles()
 
@@ -276,13 +232,16 @@ const changePage = (val) => {
 // 跳转到文章详情页面
 const router = useRouter()
 const toArticleDetail = (id) => {
-
   router.push({ name: 'ArticleDetail', params: { id: id } })
 }
 
 // 跳转到文章分类详情
 const toCategory = (id, name) => {
-  router.push({ name: 'CategoryDetail', params: { id: id }, query: { name: name } })
+  router.push({
+    name: 'CategoryDetail',
+    params: { id: id },
+    query: { name: name },
+  })
 }
 </script>
 

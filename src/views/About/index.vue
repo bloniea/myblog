@@ -3,35 +3,32 @@
     <MyContainer>
       <div class="top">
         <div class="avatar">
-          <el-avatar
-            :size="140"
-            :src="config.avatar_img"
-          ></el-avatar>
+          <el-avatar :size="140" :src="config.avatar_img"></el-avatar>
         </div>
         <div class="info">
           <div
             class="info-list"
             v-for="title in config.aboutTitles"
             :key="title"
-          ><i class="iconfont iconshandian"></i> {{title.title}}</div>
-
+          >
+            <i class="iconfont iconshandian"></i>
+            <span v-html="title.title"></span>
+          </div>
         </div>
       </div>
       <div class="contact">
-
         <el-avatar
           class="contact-list"
           v-for="contact in config.contacts"
           :key="contact"
           :src="contact.img_url"
           @click="toContact(contact.url)"
-        > <img :src="config.avatar_error" /></el-avatar>
-
+        >
+          <img :src="config.avatar_error"
+        /></el-avatar>
       </div>
-
     </MyContainer>
   </div>
-
 </template>
 
 <script setup>

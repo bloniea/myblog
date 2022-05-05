@@ -21,20 +21,18 @@ import Loading from '@/components/Loading/index.vue'
 import ArticleList from '@/components/ArticleList/index.vue'
 import Pagination from '@/components/Pagination/index.vue'
 import { reactive, ref } from '@vue/reactivity'
-import { getArticlesApi } from '../../comm/fetch';
-import { useRouter } from 'vue-router';
+import { getArticlesApi } from '../../comm/fetch'
+import { useRouter } from 'vue-router'
 const router = useRouter()
 const loading = ref(false)
 
-
 const article = reactive({
   req: {
-    pagesize: 1,
-    pagenum: 1
+    pagesize: 10,
+    pagenum: 1,
   },
   list: [],
   total: 0,
-
 })
 // 获取文章
 const getArticles = async () => {

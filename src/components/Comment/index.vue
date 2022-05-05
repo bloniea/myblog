@@ -156,7 +156,9 @@ const reply = (data) => {
     document.documentElement.scrollTop || document.body.scrollTop
   const clientHeight =
     document.documentElement.clientHeight || document.body.clientHeight
-  window.scrollTo(0, scrollTop - clientHeight / 2)
+  const scrollHeight = document.documentElement.scrollHeight
+  window.scrollTo(0, scrollTop - clientHeight / 4)
+  console.log()
   req.to_comment_id = data._id
   req.to_user_id = data.user_id
   toUserName.value = data.user.name

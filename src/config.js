@@ -20,8 +20,8 @@ const config = {
       token: 'access_token',
       api: 'https://api.github.com/'
     },
-    redirect_uri: 'http://localhost:3000/',
-    // redirect_uri: 'https://bloniea.xyz/',
+    // redirect_uri: 'http://localhost:3000/',
+    redirect_uri: 'https://bloniea.xyz/',
   },
   avatar_error: 'https://cloud.bloniea.xyz/images/avatar_error.png',
   avatar_default: 'https://cloud.bloniea.xyz/images/default_avatar.png',
@@ -29,9 +29,9 @@ const config = {
   default_img: 'https://cloud.bloniea.xyz/images/QQ202202112105073c3b326c7ae7c45a.png',
   aboutTitles: [
     { title: 'bloniea' },
+    { title: '<span style="text-decoration:line-through">全栈工程师</span>前端小白' },
     { title: '百合控' },
     { title: '我思,故百合在,然而百合却不需要我的存在' },
-    { title: '我只想说没文化真可怕' },
   ],
   contacts: [
     { url: 'https://gitee.com/bloniea', img_url: 'https://cloud.bloniea.xyz/images/gitee.png' },

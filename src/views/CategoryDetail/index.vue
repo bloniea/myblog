@@ -5,10 +5,9 @@
     <div class="category-detail">
       <div class="title">
         <span> Category:</span>
-        <span class="cate-name">{{data.cat_name}} <i
-            class="iconfont iconclose"
-            @click="last"
-          ></i> </span>
+        <span class="cate-name"
+          >{{ data.cat_name }} <i class="iconfont iconclose" @click="last"></i>
+        </span>
       </div>
       <ArticleList
         :articles="data.articles"
@@ -21,9 +20,7 @@
         @changePage="changePage"
       ></Pagination>
     </div>
-
   </MyContainer>
-
 </template>
 
 <script setup>
@@ -46,11 +43,11 @@ const data = reactive({
   articles: [],
   cat_name: '',
   req: {
-    pagesize: 2,
+    pagesize: 10,
     pagenum: 1,
-    category_id: null
+    category_id: null,
   },
-  total: 0
+  total: 0,
 })
 // 根据分类id获取该分类发文章
 const getCategoryDetail = async () => {
@@ -68,7 +65,7 @@ const getCategoryDetail = async () => {
 }
 getCategoryDetail()
 // 页码改变
-const changePage = page => {
+const changePage = (page) => {
   data.req.pagenum = page
   getCategoryDetail()
 }
