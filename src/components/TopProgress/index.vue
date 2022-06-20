@@ -1,18 +1,14 @@
 <template>
   <div class="progress-box">
-    <div
-      class="top-progress"
-      :style="'width:'+data.width+'%;'"
-    ></div>
+    <div class="top-progress" :style="'width:' + data.width + '%;'"></div>
   </div>
-
 </template>
 
 <script setup>
 import { onMounted, reactive } from 'vue'
 
 const data = reactive({
-  width: 0
+  width: 0,
 })
 const scroll = () => {
   // let width = ref(0)
@@ -20,23 +16,25 @@ const scroll = () => {
     // 滚动总高度
     const scrollHeight = document.documentElement.scrollHeight
     // 页面可视化高度
-    const windowHeight = document.documentElement.clientHeight || document.body.clientHeight
+    const windowHeight =
+      document.documentElement.clientHeight || document.body.clientHeight
     // 滚动条距离顶部
     // 滚动条在最底部距离顶部出现了偏差，使用向上取整使它和在顶部距离底部的距离一致
     // 这样滚动条在最顶部距离底部 === 滚动条在最底部距离顶部
-    const scrollTop = Math.ceil(document.documentElement.scrollTop || document.body.scrollTop)
+    const scrollTop = Math.ceil(
+      document.documentElement.scrollTop || document.body.scrollTop
+    )
     // 滚动条距离底部
     const scrollBottom = scrollHeight - scrollTop - windowHeight
     // 滚动条高度
     const scrollBtn = scrollHeight - scrollTop - scrollBottom
 
-    data.width = Math.round(scrollTop / (scrollHeight - scrollBtn) * 100)
+    data.width = Math.round((scrollTop / (scrollHeight - scrollBtn)) * 100)
   })
 }
 onMounted(() => {
   scroll()
 })
-
 </script>
 
 <style lang="stylus" scoped>

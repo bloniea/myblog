@@ -2,10 +2,14 @@
   <Loading v-if="loading"></Loading>
   <MyContainer v-else>
     <div>欢迎各位大佬交换友链</div>
-    <div>title:<span class="special">bloniea</span> </div>
+    <div>title:<span class="special">bloniea</span></div>
     <div>Bio:<span class="special">百合爱好者</span></div>
-    <div>URL:<a :href="config.url">{{config.url}}</a></div>
-    <div> Avatar: <a :href="config.avatar">{{config.avatar}}</a> </div>
+    <div>
+      URL:<a :href="config.url">{{ config.url }}</a>
+    </div>
+    <div>
+      Avatar: <a :href="config.avatar">{{ config.avatar }}</a>
+    </div>
     <div class="friends">
       <div
         class="friends-item"
@@ -13,25 +17,16 @@
         :key="friend.id"
         @click="to(friend.url)"
       >
-        <el-image
-          lazy
-          fit="cover"
-          :src="friend.img_url"
-        ></el-image>
+        <el-image lazy fit="cover" :src="friend.img_url"></el-image>
         <div class="layer">
           <div class="layer-top"></div>
           <div class="layer-down"></div>
-          <el-avatar
-            :size="50"
-            :src="friend.avatar"
-          ></el-avatar>
+          <el-avatar :size="50" :src="friend.avatar"></el-avatar>
           <div class="title">
-            {{friend.title}}
+            {{ friend.title }}
           </div>
         </div>
-
       </div>
-
     </div>
   </MyContainer>
 </template>
@@ -44,7 +39,7 @@ import config from '@/config'
 import { getFriendsApi } from '@/comm/fetch'
 const { proxy } = getCurrentInstance()
 const friends = reactive({
-  list: []
+  list: [],
 })
 const loading = ref(false)
 const getFriends = (async () => {
@@ -54,10 +49,9 @@ const getFriends = (async () => {
     friends.list = res.data.data
     loading.value = false
   }
-
 })()
 
-const to = url => {
+const to = (url) => {
   window.open(url)
 }
 </script>
@@ -79,7 +73,7 @@ const to = url => {
       width 32%
       height 120px
       margin 0 (4% / 6) 20px (4% / 6)
-      cursor pointer
+      cursor $my-cursor-pointer
       position relative
       overflow hidden
       // margin-bottom 20px

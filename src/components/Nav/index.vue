@@ -1,13 +1,9 @@
 <template>
   <nav>
-
     <div class="nav">
       <div class="title">
-        <div
-          class="logo"
-          @click="$router.push('/home')"
-        >
-          <img src="https://cloud.bloniea.xyz/images/logo.png">
+        <div class="logo" @click="$router.push('/home')">
+          <img src="https://cloud.bloniea.xyz/images/logo.png" />
         </div>
         <!-- bloniea -->
       </div>
@@ -20,16 +16,12 @@
             @click="toPage(menu.name)"
             :class="menu.class"
           >
-            <i :class="'iconfont'+' '+menu.icon"></i>{{menu.label}}
+            <i :class="'iconfont' + ' ' + menu.icon"></i>{{ menu.label }}
           </li>
-
         </ul>
       </div>
       <!-- app导航菜单 -->
-      <div
-        class="nav-names-app"
-        v-if="navNameShow"
-      >
+      <div class="nav-names-app" v-if="navNameShow">
         <ul>
           <li
             v-for="menu in menus"
@@ -37,13 +29,12 @@
             @click.stop="toPage(menu.name)"
             :class="menu.class"
           >
-            <i :class="'iconfont'+' '+menu.icon"></i>{{menu.label}}
+            <i :class="'iconfont' + ' ' + menu.icon"></i>{{ menu.label }}
           </li>
         </ul>
       </div>
       <!-- 菜单显示按钮和搜索按钮 -->
       <div class="option">
-
         <div class="search">
           <el-input
             v-model="keyword"
@@ -53,7 +44,6 @@
           />
         </div>
         <div class="user">
-
           <el-dropdown>
             <el-avatar
               :size="40"
@@ -80,20 +70,15 @@
                 <el-dropdown-item @click="logout">退出 </el-dropdown-item>
               </el-dropdown-menu>
               <el-dropdown-menu v-else>
-                <el-dropdown-item @click="isShowLoginDialog">登录</el-dropdown-item>
+                <el-dropdown-item @click="isShowLoginDialog"
+                  >登录</el-dropdown-item
+                >
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-
         </div>
-        <div
-          class="app-nav"
-          v-if="navShow"
-        >
-          <i
-            class="iconfont iconcaidan"
-            @click.stop="shouNav"
-          ></i>
+        <div class="app-nav" v-if="navShow">
+          <i class="iconfont iconcaidan" @click.stop="shouNav"></i>
         </div>
         <!-- <i
             class="iconfont iconcustom-user"
@@ -118,7 +103,6 @@
                 <div class="github">
                   <el-button @click="gitee_github('github')">github</el-button>
                 </div>
-
               </div>
               <template #footer>
                 <span class="login-footer">
@@ -143,7 +127,6 @@
                 <div class="github">
                   <el-button @click="gitee_github('github')">github</el-button>
                 </div>
-
               </div>
               <template #footer>
                 <span class="login-footer">
@@ -152,17 +135,21 @@
               </template>
             </el-dialog>
           </div>
-
         </div>
-
       </div>
     </div>
   </nav>
-
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, onMounted, reactive, ref, watch } from 'vue'
+import {
+  computed,
+  getCurrentInstance,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import config from '@/config.js'
@@ -177,11 +164,17 @@ const navShow = ref(true)
 const menus = reactive([
   { id: 1, label: '主页', name: 'Home', icon: 'iconhome', class: 'home' },
   { id: 2, label: '归档', name: 'Archive', icon: 'iconapple' },
-  { id: 3, label: '分类', name: 'Categories', icon: 'icon14', class: 'categories' },
-  // { id: 4, label: '标签', icon: 'iconpen' },
+  {
+    id: 3,
+    label: '分类',
+    name: 'Categories',
+    icon: 'icon14',
+    class: 'categories',
+  },
+  { id: 4, label: '动漫', name: 'Anime', icon: 'iconpen', class: 'anime' },
   { id: 5, label: '友链', name: 'Friends', icon: 'iconlove', class: 'friends' },
   { id: 6, label: '工具', name: 'Tool', icon: 'iconguanyu', class: 'tool' },
-  { id: 6, label: '关于', name: 'About', icon: 'iconguanyu', class: 'about' }
+  { id: 6, label: '关于', name: 'About', icon: 'iconguanyu', class: 'about' },
 ])
 const navNameShow = ref(false)
 
@@ -215,8 +208,10 @@ const route = useRoute()
 const getArticles = () => {
   const name = ref('')
   if (localStorage.getItem('searchName')) {
-    name.value = route.name != 'SearchDetail' ? route.name : localStorage.getItem('searchName')
-
+    name.value =
+      route.name != 'SearchDetail'
+        ? route.name
+        : localStorage.getItem('searchName')
   } else {
     name.value = route.name != 'SearchDetail' ? route.name : 'Home'
   }
@@ -224,23 +219,20 @@ const getArticles = () => {
   router.push({ name: 'ReloadSearch', query: { keyword: keyword.value } })
 }
 
-
-
 const store = new useStore()
 // 登录
 const loginDialogVisible = computed({
-  get () {
+  get() {
     return store.state.isShowLogin
   },
-  set (v) {
-    store.commit("setIsShowLogin", v)
-  }
+  set(v) {
+    store.commit('setIsShowLogin', v)
+  },
 })
 
-const gitee_github = type => {
+const gitee_github = (type) => {
   // 进入授权页面
   toAuth(type)
-
 }
 const closeLogin = () => {
   store.commit('setIsShowLogin', false)
@@ -253,7 +245,6 @@ const saveCode = (() => {
     localStorage.setItem('code', code)
     router.push({ name: 'Refresh' })
   }
-
 })()
 // element 的需要v-loading的dom
 const avatarLoad = ref(null)
@@ -287,7 +278,7 @@ onMounted(() => oauth())
 
 // 显示登录表单
 const isShowLoginDialog = () => {
-  store.commit("setIsShowLogin", true)
+  store.commit('setIsShowLogin', true)
   // loginDialogVisible.value = !loginDialogVisible.value
 }
 const logout = () => {
@@ -302,12 +293,11 @@ const loginStatus = computed(() => store.state.status)
 // 获取用户信息
 const userinfo = computed(() => store.state.userinfo)
 
-
 const toMe = () => {
   router.push({ name: 'Me' })
 }
 </script>
 
-<style lang='styl' scoped>
-@import './index.styl';
+<style lang="stylus" scoped>
+@import './index.styl'
 </style>

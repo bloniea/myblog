@@ -2,7 +2,7 @@
   <div class="back-to-top">
     <div
       class="cat"
-      :style="'transform:translateY(-'+data.height+'px)'"
+      :style="'transform:translateY(-' + data.height + 'px)'"
       @click="toTop"
     ></div>
   </div>
@@ -16,7 +16,7 @@ import { onMounted, onUnmounted } from '@vue/runtime-core'
 const data = reactive({
   // back-top
   defaultBackTopHeight: 900,
-  height: 900
+  height: 900,
 })
 const scroll = () => {
   // 获取可视化高度
@@ -45,10 +45,7 @@ const toTop = () => {
       clearInterval(timer)
     }
   }, 10)
-
-
 }
-
 </script>
 
 <style lang="stylus" scoped>
@@ -66,7 +63,7 @@ body {
     width 100%
     height 100%
     transition all 0.3s
-    cursor pointer
+    cursor $my-cursor-pointer
   }
   @media screen and (max-width 768px) {
     display none

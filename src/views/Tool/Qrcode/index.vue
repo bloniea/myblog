@@ -19,21 +19,11 @@
         <!-- <div class="grid-content">
           <el-input v-model="qrData.img_url"></el-input>
         </div> -->
-        <el-tabs
-          v-model="qrData.activeName"
-          type="card"
-          @tab-click="tabClick"
-        >
-          <el-tab-pane
-            label="url"
-            name="url"
-          >
+        <el-tabs v-model="qrData.activeName" type="card" @tab-click="tabClick">
+          <el-tab-pane label="url" name="url">
             <el-input v-model="qrData.imgUrl"></el-input>
           </el-tab-pane>
-          <el-tab-pane
-            label="图片上传"
-            name="upload"
-          >
+          <el-tab-pane label="图片上传" name="upload">
             <div class="image-box">
               <el-icon>
                 <plus />
@@ -44,13 +34,8 @@
                 class="upload_img"
                 fit="cover"
               ></el-image>
-              <input
-                type="file"
-                class="upload-img"
-                @change="uploadImage"
-              >
+              <input type="file" class="upload-img" @change="uploadImage" />
             </div>
-
           </el-tab-pane>
         </el-tabs>
       </el-col>
@@ -99,11 +84,7 @@
       </el-col>
       <el-col :span="20">
         <div class="grid-content">
-          <el-input
-            class="borderW"
-            type="number"
-            v-model="qrData.borderW"
-          />
+          <el-input class="borderW" type="number" v-model="qrData.borderW" />
         </div>
       </el-col>
     </el-row>
@@ -128,7 +109,6 @@
       </el-col>
     </el-row>
     <el-row :gutter="20">
-
       <el-col :span="4">
         <div class="grid-content">
           <el-button @click="createQrcode">生成</el-button>
@@ -138,10 +118,7 @@
     <div class="qrcode-image">
       <canvas ref="qrcode"></canvas>
     </div>
-    <div
-      class="btn"
-      v-if="qrData.qrcodeShow"
-    >
+    <div class="btn" v-if="qrData.qrcodeShow">
       <el-button @click="saveQrcode">保存二维码</el-button>
     </div>
   </div>
@@ -156,7 +133,7 @@ import QRCode from 'qrcode'
 const { proxy } = getCurrentInstance()
 const qrData = reactive({
   dark: '#000000',
-  light: "#ffffff",
+  light: '#ffffff',
   margin: 3,
   url: 'https://bloniea.xyz/',
   width: 400,
@@ -167,7 +144,7 @@ const qrData = reactive({
   borderW: 1,
   activeName: 'url',
   file: '',
-  qrcodeShow: false
+  qrcodeShow: false,
 })
 qrData.img_url = qrData.imgUrl
 // 生成二维码
@@ -180,9 +157,9 @@ const createQrcode = () => {
     margin: qrData.margin,
     color: {
       dark: qrData.dark,
-      light: qrData.light
+      light: qrData.light,
     },
-    width: qrData.width <= 100 ? 100 : qrData.width
+    width: qrData.width <= 100 ? 100 : qrData.width,
   }
 
   QRCode.toDataURL(elemt, qrData.url, opts, function (err, url) {
@@ -198,24 +175,24 @@ const createQrcode = () => {
           sy = img.height > img.width ? (img.height - img.width) / 2 : 0,
           swidth = img.width > img.height ? img.height : img.width,
           sheight = img.height > img.width ? img.width : img.height,
-          x = (qrData.width / 2) - (qrData.width / 4 / 2),
-          y = (qrData.width / 2) - (qrData.width / 4 / 2),
-          width = (qrData.width / 4),
-          height = (qrData.width / 4)
+          x = qrData.width / 2 - qrData.width / 4 / 2,
+          y = qrData.width / 2 - qrData.width / 4 / 2,
+          width = qrData.width / 4,
+          height = qrData.width / 4
         ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height)
         ctx.strokeStyle = qrData.borderColor
-        ctx.lineWidth = qrData.borderW;
-        ctx.strokeRect(x, y, width, height);
+        ctx.lineWidth = qrData.borderW
+        ctx.strokeRect(x, y, width, height)
       }
     }
   })
 }
 
 const tabClick = (tab, event) => {
-  if (tab.props.name == "url") {
+  if (tab.props.name == 'url') {
     qrData.img_url = qrData.imgUrl
   }
-  if (tab.props.name == "upload") {
+  if (tab.props.name == 'upload') {
     qrData.img_url = qrData.base64Url
   }
 }
@@ -232,26 +209,29 @@ const uploadImage = (e) => {
       e.target.value = null
     }
   }
-
 }
 // 保存二维码
 const saveQrcode = () => {
   console.log(proxy.$refs.qrcode)
   const url = proxy.$refs.qrcode.toDataURL('image/png')
-  const oA = document.createElement("a");
-  oA.download = '二维码';
-  oA.href = url;
-  document.body.appendChild(oA);
-  oA.click();
-  oA.remove();
+  const oA = document.createElement('a')
+  oA.download = '二维码'
+  oA.href = url
+  document.body.appendChild(oA)
+  oA.click()
+  oA.remove()
 }
-watch(() => qrData.base64Url, (url) => qrData.img_url = url)
-watch(() => qrData.imgUrl, (url) => qrData.img_url = url)
-
+watch(
+  () => qrData.base64Url,
+  (url) => (qrData.img_url = url)
+)
+watch(
+  () => qrData.imgUrl,
+  (url) => (qrData.img_url = url)
+)
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../Styles/variable.styl'
 .qrcode {
   .margin, .borderW {
     width 20%
@@ -288,7 +268,7 @@ watch(() => qrData.imgUrl, (url) => qrData.img_url = url)
         left 0
         top 0
         opacity 0
-        cursor pointer
+        cursor $my-cursor-pointer
         >>> input {
           width 200px
           height 200px
@@ -301,13 +281,13 @@ watch(() => qrData.imgUrl, (url) => qrData.img_url = url)
     display block
     margin-top 10px
   }
-  >>> .el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+   :deep(.el-tabs--card>.el-tabs__header .el-tabs__item.is-active) {
     border-bottom-color $baseColor
   }
-  >>> .el-tabs__item.is-active {
+  :deep(.el-tabs__item.is-active) {
     color $baseColor
   }
-  >>> .el-tabs__item:hover {
+  :deep(.el-tabs__item:hover) {
     color $baseColor
   }
 }

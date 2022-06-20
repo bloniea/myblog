@@ -1,6 +1,7 @@
-$baseColor = #b854d4
+@import './variable.styl'
 html {
   font-size 16px
+  cursor $my-cursor-default
 }
 @media screen and (max-width 768px) {
   html {
@@ -20,15 +21,15 @@ html, body {
   color #4b4b4b
   font-family 'Comic Sans MS', cursive, sans-serif
   ::selection {
-    background-color #b854d4
+    background-color $baseColor
     color #fff
   }
   ::-webkit-selection {
-    background-color #b854d4
+    background-color $baseColor
     color #fff
   }
   ::-moz-selection {
-    background-color #b854d4
+    background-color $baseColor
     color #fff
   }
 }
@@ -49,7 +50,7 @@ html, body {
   background rgba(206, 133, 226, 0.35)
 }
 #nprogress .bar {
-  background #b854d4 !important // 自定义颜色
+  background $baseColor !important // 自定义颜色
 }
 /* 定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸 */
 ::-webkit-scrollbar {
@@ -110,4 +111,23 @@ a {
 .el-loading-spinner .path {
   stroke #fff
   stroke-width 4px
+}
+.text_popup {
+  animation textPopUp 1s
+  color #740e72
+  user-select none
+  white-space nowrap
+  position absolute
+  z-index 999
+}
+@keyframes textPopUp {
+  0%, 100% {
+    opacity 0
+  }
+  10% {
+    opacity 1
+  }
+  100% {
+    transform translateY(-50px)
+  }
 }

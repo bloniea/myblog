@@ -19,13 +19,18 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     })
   ],
-  resolve:{
-    alias: {  
-    "@": path.resolve(__dirname, "src"),
+  css: {
+    preprocessorOptions: {
+      stylus: {
+        imports: [path.resolve(__dirname, './src/Styles/variable.styl')],
+      }
     }
   },
-  // productionSourceMap: false,
-  // publicPath: '/',
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    }
+  },
 
   server: {
     proxy: {
@@ -46,10 +51,10 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/gitee_api/, '')
       },
     },
-    
+
   },
 
-  
+
 })
 
 
@@ -63,7 +68,7 @@ export default defineConfig({
 //     }),
 //   ],
 //   resolve:{
-//     alias: {  
+//     alias: {
 //     "@": path.resolve(__dirname, "src"),
 //     },
 //   },

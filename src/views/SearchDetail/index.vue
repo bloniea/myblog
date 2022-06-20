@@ -1,11 +1,12 @@
 <template>
-
   <Loading v-if="loading"></Loading>
   <MyContainer v-else>
     <div class="serach-detail">
       <div class="title">
-        <span>Search: <span class="special">{{data.req.keyword}}</span> </span>
-        <span class="keyword">{{data.req.query}}</span>
+        <span
+          >Search: <span class="special">{{ data.req.keyword }}</span>
+        </span>
+        <span class="keyword">{{ data.req.query }}</span>
       </div>
       <ArticleList
         :articles="data.articles"
@@ -19,7 +20,6 @@
       @changePage="changePage"
     ></Pagination>
   </MyContainer>
-
 </template>
 
 <script setup>
@@ -38,11 +38,10 @@ const data = reactive({
   req: {
     pagenum: 1,
     pagesize: 10,
-    keyword: keyword.value
+    keyword: keyword.value,
   },
-  total: 0
+  total: 0,
 })
-
 
 const getArticles = async () => {
   loading.value = true
@@ -52,7 +51,6 @@ const getArticles = async () => {
     data.articles = res.data.data
     data.total = res.data.total
   }
-
 }
 
 onMounted(() => {
@@ -72,8 +70,6 @@ const toBack = () => {
   } else {
     router.replace({ name: 'Home' })
   }
-
-
 }
 
 const watchBack = (() => {
@@ -87,11 +83,9 @@ const watchBack = (() => {
 const toArticleDetail = (id) => {
   router.push({ name: 'ArticleDetail', params: { id: id } })
 }
-
 </script>
 
 <style lang="stylus" scoped>
-@import '../../Styles/variable.styl'
 .serach-detail {
   padding 10px
   .keyword {

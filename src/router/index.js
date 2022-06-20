@@ -11,6 +11,7 @@ const Me = () => import('../views/Me/index.vue')
 const About = () => import('../views/About/index.vue')
 const Friends = () => import('../views/Friends/index.vue')
 const NotFound = () => import('../views/NotFound/index.vue')
+const Anime = () => import('../views/Anime/index.vue')
 const Tool = () => import('../views/Tool/index.vue')
 const Reg = () => import('../views/Tool/Reg/index.vue')
 const Qrcode = () => import('../views/Tool/Qrcode/index.vue')
@@ -77,6 +78,11 @@ const routes = [
     path: '/friends',
     name: 'Friends',
     component: Friends
+  },
+  {
+    path: '/anime',
+    name: 'Anime',
+    component: Anime
   },
   {
     path: "/tool",

@@ -1,24 +1,16 @@
 <template>
   <div class="pagination">
-    <div
-      class="prev"
-      @click="prev"
-      v-if="prevShow"
-    >prev</div>
-    <div
-      class="next"
-      @click="next"
-      v-if="nextShow"
-    >next</div>
+    <div class="prev" @click="prev" v-if="prevShow">prev</div>
+    <div class="next" @click="next" v-if="nextShow">next</div>
   </div>
 </template>
 
-<script  setup>
+<script setup>
 import { ref, onMounted } from 'vue'
 const props = defineProps({
   pagenum: Number,
   pagesize: Number,
-  total: Number
+  total: Number,
 })
 const prevShow = ref(true)
 const nextShow = ref(true)
@@ -32,7 +24,7 @@ const pageInit = () => {
   if (pagenum <= 1) {
     prevShow.value = false
   }
-  if ((pagenum * pagesize) >= total) {
+  if (pagenum * pagesize >= total) {
     nextShow.value = false
   }
 }
@@ -56,13 +48,12 @@ const next = () => {
     total = props.total,
     pagesize = props.pagesize
   pagenum += 1
-  if ((pagenum * pagesize) >= total) {
+  if (pagenum * pagesize >= total) {
     nextShow.value = false
   }
   // console.log(pagenum * pagesize, total)
   myemit('changePage', pagenum)
 }
-
 </script>
 
 <style lang="stylus" scoped>
@@ -75,7 +66,7 @@ const next = () => {
     // margin 10px
     background #9c27b0
     color #fff
-    cursor pointer
+    cursor $my-cursor-pointer
     transition all 0.3s
     &:hover {
       background #CD93E4

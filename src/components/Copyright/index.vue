@@ -1,7 +1,5 @@
 <template>
-  <footer class="copyright">
-    ©{{year}} bloniea. All rights reserved.
-  </footer>
+  <footer class="copyright">©{{ year }} bloniea. All rights reserved.</footer>
 </template>
 
 <script setup>
