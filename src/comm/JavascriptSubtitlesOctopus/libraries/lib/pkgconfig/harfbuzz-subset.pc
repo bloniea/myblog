@@ -1,0 +1,12 @@
+prefix=/code/dist/libraries
+exec_prefix=/code/dist/libraries
+libdir=/code/dist/libraries/lib
+includedir=/code/dist/libraries/include
+
+Name: harfbuzz
+Description: HarfBuzz font subsetter
+Version: 2.8.2
+
+Requires: harfbuzz
+Libs: -L${libdir} -lharfbuzz-subset
+Cflags: -I${includedir}/harfbuzz

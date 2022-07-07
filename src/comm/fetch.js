@@ -51,3 +51,21 @@ export const getCommentsApi = async (id, params) => {
   const url = api + '/comments/' + id
   return await fetchApi(url, { params: params })
 }
+
+// 获取关于我的文章
+export const getAboutArticles = async (params) => {
+  const url = api + '/aboutArticles/'
+  return await fetchApi(url, { params: params })
+}
+
+// 获取所有动漫
+export const getAboutAnimesApi = async (params) => {
+  const url = api + '/animes/'
+  return await fetchApi(url, { params: params })
+}
+
+// 获取动漫信息
+export const getAnimeApi = async (id, params) => {
+  const url = api + '/anime/' + id
+  return await fetchApi(url, { params: params })
+}

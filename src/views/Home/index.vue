@@ -192,7 +192,7 @@ import { formatDate, beforeArticle } from '@/comm/function.js'
 import Loading from '@/components/loading/index.vue'
 import Pagination from '@/components/Pagination/index.vue'
 import config from '@/config.js'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import MdToHtml from '@/components/MdToHtml/index.vue'
 import { getArticlesApi } from '@/comm/fetch'
 const { proxy } = getCurrentInstance()
@@ -224,8 +224,8 @@ const getArticles = async () => {
 getArticles()
 
 // 页码改变的方法
-const changePage = (val) => {
-  articlesData.req.pagenum = val
+const changePage = (page) => {
+  articlesData.req.pagenum = page
   getArticles()
 }
 

@@ -33,10 +33,12 @@ export default defineConfig({
   },
 
   server: {
+    host: '0.0.0.0',
+    port: 3000,
     proxy: {
       '/api': {
-        target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
-        // target:'http://localhost:3333/api/open/',
+        // target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
+        target: 'http://localhost:5555/api/open/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },
@@ -50,6 +52,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/gitee_api/, '')
       },
+      '/blogLibrary': {
+        target: 'https://cloud.bloniea.xyz/library/myblog/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/blogLibrary/, '')
+      }
     },
 
   },

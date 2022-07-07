@@ -3,6 +3,7 @@ const config = {
   defaultImgUrl: 'https://cloud.bloniea.xyz/images/QQ202202112105073c3b326c7ae7c45a.png',
   avatar: 'https://cloud.bloniea.xyz/images/avatar.png',
   url: 'https://bloniea.xyz/',
+  title: 'bloniea|可愛くなりたい',
   auth: {
     gitee: {
       client_id: '4a5503cddc755a561c01b98f87589d4373f23d2a29d36d4d2eaf6e65ad9f8b63',
@@ -20,23 +21,24 @@ const config = {
       token: 'access_token',
       api: 'https://api.github.com/'
     },
-    // redirect_uri: 'http://localhost:3000/',
-    redirect_uri: 'https://bloniea.xyz/',
+    redirect_uri: 'http://localhost:3000/',
+    // redirect_uri: 'https://bloniea.xyz/',
   },
   avatar_error: 'https://cloud.bloniea.xyz/images/avatar_error.png',
   avatar_default: 'https://cloud.bloniea.xyz/images/default_avatar.png',
   avatar_img: 'https://cloud.bloniea.xyz/images/avatar.png',
   default_img: 'https://cloud.bloniea.xyz/images/QQ202202112105073c3b326c7ae7c45a.png',
   aboutTitles: [
-    { title: 'bloniea' },
-    { title: '<span style="text-decoration:line-through">全栈工程师</span>前端小白' },
-    { title: '百合控' },
-    { title: '我思,故百合在,然而百合却不需要我的存在' },
+    { title: 'bloniea <span style="text-decoration:line-through">一个全栈工程师</span>前端小白' },
+    { title: 'ユリの騎士' },
+    { title: '何以解忧,唯有百合' },
+    { title: '你，去祭典了吧，私の知らない女の子と一緒に' },
+
   ],
   contacts: [
     { url: 'https://gitee.com/bloniea', img_url: 'https://cloud.bloniea.xyz/images/gitee.png' },
     { url: 'tencent://message/?uin=2032580075&Site=bloniea&Menu=yes', img_url: 'https://cloud.bloniea.xyz/images/QQ.png' },
-    { url: 'http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=tdHQ2dzG3dTZ2sPQ2czM2vXExJvW2tg', img_url: 'https://cloud.bloniea.xyz/images/Email.png' },
+    { url: 'http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=tdfZ2tvc0NT1xMSb1trY"', img_url: 'https://cloud.bloniea.xyz/images/Email.png' },
   ],
   tools: [
     { img_url: "https://cloud.bloniea.xyz/images/1000-1.jpg", router_name: "Reg", title: "正则表达式", subtitle: "在线测试正则表达式" },

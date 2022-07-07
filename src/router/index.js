@@ -11,11 +11,11 @@ const Me = () => import('../views/Me/index.vue')
 const About = () => import('../views/About/index.vue')
 const Friends = () => import('../views/Friends/index.vue')
 const NotFound = () => import('../views/NotFound/index.vue')
-const Anime = () => import('../views/Anime/index.vue')
 const Tool = () => import('../views/Tool/index.vue')
 const Reg = () => import('../views/Tool/Reg/index.vue')
 const Qrcode = () => import('../views/Tool/Qrcode/index.vue')
-
+const Anime = () => import('../views/Anime/Anime.vue')
+const AnimeDetail = () => import('../views/Anime/AnimeDetail/AnimeDetail.vue')
 const routes = [
   {
     path: '/',
@@ -82,8 +82,17 @@ const routes = [
   {
     path: '/anime',
     name: 'Anime',
-    component: Anime
+    component: Anime,
+    children: [
+      {
+        path: 'detail',
+        name: 'AnimeDetail',
+        component: AnimeDetail,
+        meta: { anime: true }
+      },
+    ]
   },
+
   {
     path: "/tool",
     name: "Tool",
@@ -115,7 +124,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  // history: createWebHashHistory(),
+  // history: createWebHashHistory('./admin'),
   history: createWebHistory(),
   routes
 })

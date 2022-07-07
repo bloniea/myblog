@@ -1,0 +1,150 @@
+.anime-detail {
+  .my-container {
+    :deep(.video-warpper) {
+      position relative
+      overflow hidden
+      z-index 999
+      ::cue {
+        background transparent
+      }
+      .video-title-top {
+        position absolute
+        transition opacity 0.4s ease-in-out, transform 0.4s ease-in-out
+        top 0
+        left 0
+        right 0
+        // bottom -20px
+        height 2.875rem
+        background linear-gradient(rgba(0, 0, 0, 0.75), transparent)
+        .video-title {
+          position absolute
+          top 0.625rem
+          left 0.625rem
+          color #d8d8d8
+          font-size 1.125rem
+        }
+      }
+      .title-enter {
+        transform translateY(0%)
+        opacity 1
+      }
+      .title-leave {
+        transform translateY(-100%)
+        opacity 0
+      }
+      .plyr {
+        --plyr-color-main $baseColor
+      }
+      .slide, .fast, .volume {
+        position absolute
+        top 5rem
+        left 50%
+        right 0
+        transform translateX(-50%)
+        width 120px
+        background rgba(0, 0, 0, 0.4)
+        transition opacity 0.4s
+        display flex
+        justify-content space-around
+        transition opacity 0.4s ease-in-out, transform 0.4s ease-in-out
+        i {
+          fill #fff
+        }
+        .time {
+          color #fff
+          line-height 30px
+        }
+      }
+      .leftVolume svg {
+        transform rotate(180deg)
+      }
+      .fast, .volume {
+        display flex
+        justify-content space-around
+        .label {
+          color #fff
+          line-height 30px
+        }
+      }
+      .i-enter {
+        opacity 1
+      }
+      .i-leave {
+        opacity 0
+      }
+      .subtitles-btn {
+        position relative
+        .slash {
+          &:before {
+            content ''
+            width 100%
+            height 2px
+            background-color #fff
+            position absolute
+            top 50%
+            left 0
+            transform rotate(45deg) scale(0.6, 0.6)
+          }
+        }
+      }
+    }
+    margin-top 20px
+    .title {
+      padding 10px
+      font-size 24px
+      color $baseColor
+      font-weight bold
+    }
+    :deep(.el-tabs--border-card) {
+      background transparent
+    }
+    .pane1 {
+      display flex
+      justify-content space-between
+      padding 5px
+      .left {
+        width 36%
+        overflow hidden
+        border-radius 10px
+        height 500px
+        .el-image {
+          width 100%
+          height 100%
+        }
+      }
+      .right {
+        width 60%
+      }
+    }
+    .pane2 {
+      display flex
+      flex-wrap wrap
+      .el-button {
+        margin-right 12px
+        margin-top 12px
+        margin-left 12px
+      }
+      .active {
+        border 2px solid $baseColor
+      }
+    }
+    :deep(.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active) {
+      color $baseColor
+    }
+    :deep(.el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover) {
+      color $baseColor
+    }
+    @media screen and (max-width 768px) {
+      .pane1 {
+        flex-direction column
+        .left {
+          width 100%
+          height auto
+        }
+        .right {
+          width 100%
+        }
+      }
+    }
+  }
+}

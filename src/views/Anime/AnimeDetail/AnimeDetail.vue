@@ -1,0 +1,630 @@
+<template>
+  <Loading v-if="loading"></Loading>
+  <div class="anime-detail" v-else>
+    <MyContainer class="title-content">
+      <div class="video-warpper">
+        <video ref="myVideo" controls>
+          <source
+            :src="anime.list.content[episodesIndex].episodes"
+            type="video/mp4"
+          />
+          <track kind="captions" srclang="中文" :src="getSubUrl('vtt')" />
+
+          <p class="vjs-no-js">
+            To view this video please enable JavaScript, and consider upgrading
+            to a web browser that
+            <a href="https://videojs.com/html5-video-support/" target="_blank"
+              >supports HTML5 video</a
+            >
+          </p>
+        </video>
+      </div>
+
+      <div class="title">安达与岛村</div>
+      <el-tabs type="border-card">
+        <el-tab-pane label="剧情概要">
+          <div class="pane1">
+            <div class="right">
+              <MdToHtml :html="anime.list.generalize"></MdToHtml>
+            </div>
+            <div class="left">
+              <el-image :src="anime.list.img_url" fit="cover"> </el-image>
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="视频选集">
+          <div class="pane2">
+            <el-button
+              v-for="(item, i) in anime.list.content"
+              :key="item._id"
+              @click="switchEpisode(i)"
+              :class="episodesIndex == i ? 'active' : ''"
+              >第{{ i + 1 }}集 - {{ item.title }}</el-button
+            >
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </MyContainer>
+    <Comment
+      @saveComment="saveComment"
+      :comments="anime.comments"
+      :total="commentTatol"
+      @loadAdd="loadAdd"
+      :btnLoading="commentBtnLoading"
+      :addLoading="commentAddLoading"
+    ></Comment>
+  </div>
+</template>
+
+<script setup>
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from '@vue/runtime-core'
+import Loading from '@/components/Loading/index.vue'
+import { getAnimeApi, getCommentsApi } from '@/comm/fetch'
+import { addCommentApi } from '@/comm/oauthFetch'
+import { useRoute, useRouter } from 'vue-router'
+import MyContainer from '@/components/MyContainer/index.vue'
+import Plyr from 'plyr'
+import 'plyr/dist/plyr.css'
+import { useStore } from 'vuex'
+const route = useRoute()
+const router = useRouter()
+const loading = ref(true)
+// 如果不存在路由参数不存在则跳转到404页面
+const isId = () => {
+  if (!route.query.id) {
+    router.push({ name: 'NotFound' })
+  }
+}
+isId()
+
+// 监听路由变化
+// watch(route, () => isId())
+const anime = reactive({
+  list: '',
+  comments: [],
+})
+
+// 获取评论
+const commentTatol = ref(0)
+const commentBtnLoading = ref(false)
+const commentAddLoading = ref(false)
+const store = new useStore()
+const commentReq = reactive({
+  pagenum: 1,
+  pagesize: 10,
+  orderBy: -1,
+})
+// 获取评论
+const getComments = async () => {
+  const loadingInstance = ElLoading.service({
+    target: '.comments',
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
+  const res = await getCommentsApi(route.query.id, commentReq)
+  if (res.status === 200 && res.ok) {
+    anime.comments = res.data.data
+    commentTatol.value = res.data.total
+  }
+  loadingInstance.close()
+}
+const getAddComments = async () => {
+  commentAddLoading.value = true
+  const res = await getCommentsApi(data.id, commentReq)
+  if (res.status === 200 && res.ok) {
+    commentAddLoading.value = false
+    const resData = res.data.data
+    anime.comments = [...data.comments, ...res.data.data]
+    commentTatol.value = res.data.total
+  }
+}
+// 获取存在vuex的用户信息
+const user = computed(() => store.state.userinfo)
+// 提交评论
+const saveComment = async (val) => {
+  const req = {
+    article_id: route.query.id,
+    user_id: user.value._id,
+    content: val.content,
+  }
+
+  if (val.to_comment_id) req.to_comment_id = val.to_comment_id
+  commentBtnLoading.value = true
+  const res = await addCommentApi(req)
+  if (res.status === 200 && res.ok) {
+    commentBtnLoading.value = false
+    ElMessage.success('评论成功')
+    store.commit('setCommentIsNull', true)
+    if (anime.comments.length == commentTatol.value) {
+      // data.comments.push(res.data.data)
+      anime.comments.unshift(res.data.data)
+      commentTatol.value++
+    }
+  } else {
+    commentBtnLoading.value = false
+    ElMessage.error('提交超时')
+  }
+}
+
+const loadAdd = () => {
+  commentReq.pagenum++
+  getAddComments()
+}
+
+// 根据传过来的id获取动漫信息
+const getAnime = async () => {
+  const id = route.query.id
+  if (id) {
+    loading.value = true
+    const res = await getAnimeApi(id)
+    if (res.status == 200 && res.ok) {
+      anime.list = res.data.data
+    }
+    loading.value = false
+    nextTick(() => {
+      initPlur()
+      getComments()
+    })
+  }
+}
+getAnime()
+
+// 后端真实地址
+const url = 'https://cloud.bloniea.xyz/library/myblog/'
+// 显示字幕与否
+const subtitles = ref(true)
+// 字幕方法实例
+let subtitlesInstance = ref(null)
+// 获取保存的集数
+const setEpisodesIndex = () => {
+  const loachEpisodesIndex = window.localStorage.getItem('episodesIndex')
+  if (
+    loachEpisodesIndex &&
+    Number(loachEpisodesIndex) == Number(loachEpisodesIndex)
+  ) {
+    return Number(loachEpisodesIndex)
+  } else {
+    return 0
+  }
+}
+const episodesIndex = ref(setEpisodesIndex())
+
+// 格式化字体数据格式 返回的是字符串要转数组
+// 并把每项格式化为代理地址
+const strToArr = (str) => {
+  const arr = str.split(',')
+  return arr.map((item) => {
+    return item.replace(url, '/blogLibrary/')
+  })
+}
+/*
+ ** ass文件需要跨域格式化为代理地址
+ ** https://cloud.bloniea.xyz/library/myblog/1.ass --- /blogLibrary/1.ass
+ */
+const getSubUrl = (t) => {
+  let src = ''
+  if (anime.list.content[episodesIndex.value][t]) {
+    src = anime.list.content[episodesIndex.value][t].replace(
+      url,
+      '/blogLibrary/'
+    )
+  }
+  return src
+}
+
+// 初始化字幕方法
+const loadSubtitles = () => {
+  if (subtitles.value) {
+    const v = document.getElementsByTagName('video')[0]
+    const options = {
+      video: v,
+      subUrl: getSubUrl('ass'),
+      fonts: strToArr(anime.list.fonts),
+      debug: false,
+      workerUrl:
+        '/blogLibrary/JavascriptSubtitlesOctopus/dist/js/subtitles-octopus-worker.js',
+    }
+    subtitlesInstance.value = new SubtitlesOctopus(options)
+  } else {
+    if (subtitlesInstance.value && subtitlesInstance.value.dispose) {
+      subtitlesInstance.value.dispose()
+    }
+  }
+}
+const videoTime = ref(null)
+// 插入元素(不知如何显示在全屏之上只能这样插入了)
+const inserDom = () => {
+  // title
+  const titleDom = document.createElement('div')
+  titleDom.className = 'video-title-top'
+  titleDom.innerHTML = ` <div class="video-title">
+              第${episodesIndex.value + 1}集 -
+              ${anime.list.content[episodesIndex.value].title}
+            </div>`
+  const parseDom = document.querySelector('.plyr__video-wrapper')
+  const video = document.querySelector('video')
+  parseDom.insertBefore(titleDom, video)
+  // 快进
+  const fastDom = document.createElement('div')
+  fastDom.className = 'fast i-leave'
+  fastDom.innerHTML = ` <i>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="30"
+                height="30"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  d="M12 13.333l-9.223 6.149A.5.5 0 0 1 2 19.066V4.934a.5.5 0 0 1 .777-.416L12 10.667V4.934a.5.5 0 0 1 .777-.416l10.599 7.066a.5.5 0 0 1 0 .832l-10.599 7.066a.5.5 0 0 1-.777-.416v-5.733z"
+                />
+              </svg>
+            </i>
+            <span class="label">×3加速播放</span>`
+  parseDom.insertBefore(fastDom, video)
+  // 左右滑动
+  const slide = document.createElement('div')
+  slide.className = 'slide i-leave '
+  slide.innerHTML = `
+            <i>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="26"
+                  height="26"
+                >
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path
+                    d="M12 13.333l-9.223 6.149A.5.5 0 0 1 2 19.066V4.934a.5.5 0 0 1 .777-.416L12 10.667V4.934a.5.5 0 0 1 .777-.416l10.599 7.066a.5.5 0 0 1 0 .832l-10.599 7.066a.5.5 0 0 1-.777-.416v-5.733z"
+                  />
+                </svg>
+              </i>
+              <span class="time">${getTime(videoTime.value)}</span>`
+  parseDom.insertBefore(slide, video)
+  // 上下滑动
+  const volume = document.createElement('div')
+  volume.className = 'volume i-leave'
+  volume.innerHTML = `  <i>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="30"
+                height="30"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  d="M5.889 16H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h3.889l5.294-4.332a.5.5 0 0 1 .817.387v15.89a.5.5 0 0 1-.817.387L5.89 16zm13.517 4.134l-1.416-1.416A8.978 8.978 0 0 0 21 12a8.982 8.982 0 0 0-3.304-6.968l1.42-1.42A10.976 10.976 0 0 1 23 12c0 3.223-1.386 6.122-3.594 8.134zm-3.543-3.543l-1.422-1.422A3.993 3.993 0 0 0 16 12c0-1.43-.75-2.685-1.88-3.392l1.439-1.439A5.991 5.991 0 0 1 18 12c0 1.842-.83 3.49-2.137 4.591z"
+                />
+              </svg>
+            </i>
+            <span class="label">${volumeNumber.value} %</span>`
+  parseDom.insertBefore(volume, video)
+}
+// 改变class进行显示隐藏
+const changeClass = (dom, name) => {
+  const d = document.querySelector(dom)
+  d.className = name
+}
+const setVideoTitle = () => {
+  const titleDom = document.querySelector('.video-title-top')
+  // console.log(titleDom)
+  player.value.on('controlsshown', () => {
+    // titleDom.className = 'video-title-top enter'
+    changeClass('.video-title-top', 'video-title-top title-enter')
+  })
+  player.value.on('controlshidden', () => {
+    // titleDom.className = 'video-title-top leave'
+    changeClass('.video-title-top', 'video-title-top title-leave')
+  })
+}
+
+const addTipStatus = () => {}
+// videojs 实例
+const player = ref('')
+// video dom
+const myVideo = ref(null)
+const initPlur = async () => {
+  // 初始化plyr video
+  player.value = new Plyr(myVideo.value, {
+    keyboard: { focused: false, global: true },
+    controls: [
+      'play-large',
+      'play',
+      'progress',
+      'current-time',
+      'mute',
+      'volume',
+      'settings',
+      'fullscreen',
+      'airplay',
+    ],
+    settings: ['speed'],
+    // invertTime: false,
+    // debug: true,
+  })
+  player.value.on('ready', plyrReady)
+  // 播放结束自动进入下一集
+  player.value.on('ended', () => {
+    if (localStorage.getItem(`${anime.list._id + episodesIndex.value}`)) {
+      localStorage.removeItem(`${anime.list._id + episodesIndex.value}`)
+      nextEpisode()
+    }
+  })
+
+  player.value.on('timeupdate', () => {
+    localStorage.setItem(
+      anime.list._id + episodesIndex.value,
+      player.value.currentTime
+    )
+  })
+}
+// plyr 视频播放器就绪
+const plyrReady = () => {
+  const controlBar = document.getElementsByClassName('plyr__controls')[0]
+  // 添加字幕按钮
+  const subtitlesBtn = document.createElement('div')
+  subtitlesBtn.className = 'subtitles-btn '
+  subtitlesBtn.innerHTML = `<button class=" my-subtitles-btn plyr__controls__item plyr__control">字幕</button><div class="slash slashNode"></div>`
+  const plyrSetting = document.getElementsByClassName('plyr__menu')[0]
+  controlBar.insertBefore(subtitlesBtn, plyrSetting)
+  const slash = document.getElementsByClassName('slashNode')[0]
+
+  slash.className = subtitles.value ? ' slashNode' : 'slash slashNode '
+  // 点击字幕以显示隐藏
+  subtitlesBtn.addEventListener('click', () => {
+    subtitles.value = !subtitles.value
+    // 加载ass字幕
+    if (SubtitlesOctopus) loadSubtitles()
+  })
+  // 字幕的图标变化
+  watch(
+    () => subtitles.value,
+    (val) => {
+      const slash = document.getElementsByClassName('slashNode')[0]
+      slash.className = val ? ' slashNode' : 'slash slashNode '
+    }
+  )
+  // 下一集按钮
+  const nextBnt = document.createElement('button')
+  nextBnt.className = 'next-btn plyr__controls__item plyr__control'
+  nextBnt.innerHTML = `<svg t="1657133031100" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3098" width="200" height="200"><path d="M922.069625 477.9341L472.652621 151.089311a43.342807 43.342807 0 0 0-68.847075 35.055725V328.665491L159.636492 151.089311a43.364482 43.364482 0 0 0-68.847076 35.055725v653.682354a43.350032 43.350032 0 0 0 68.847076 35.062951L403.805546 697.328611v142.498779a43.364482 43.364482 0 0 0 68.847075 35.062951l449.417004-326.837565a43.342807 43.342807 0 0 0 0-70.118676z" fill="" p-id="3099"></path></svg>`
+  const progressControl = document.getElementsByClassName(
+    'plyr__progress__container'
+  )[0]
+  controlBar.insertBefore(nextBnt, progressControl)
+  nextBnt.addEventListener('click', () => {
+    nextEpisode()
+  })
+  // 空格切换播放，禁用默认滚动
+  document.body.addEventListener('keydown', (e) => {
+    if (e.code && e.code === 'Space') {
+      const buttons = document.getElementsByTagName('button')
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].blur()
+      }
+      e.preventDefault()
+      if (player.value.paused) {
+        player.value.play()
+      } else {
+        player.value.pause()
+      }
+    }
+  })
+
+  // 设置video标题
+  inserDom()
+  setVideoTitle()
+  addTipStatus()
+
+  // 加载ass字幕
+  if (SubtitlesOctopus) loadSubtitles()
+
+  plyrTouch()
+
+  player.value.play()
+
+  player.value.on('loadeddata', () => {
+    const currentTime = localStorage.getItem(
+      `${anime.list._id}${episodesIndex.value}`
+    )
+    if (currentTime && Number(currentTime) == Number(currentTime)) {
+      player.value.currentTime = Number(currentTime)
+    }
+  })
+}
+const switchEpisode = (i) => {
+  episodesIndex.value = i
+  pluyrSwitchEpisode()
+}
+const nextEpisode = () => {
+  if (episodesIndex.value >= anime.list.content.length - 1) {
+    episodesIndex.value = 0
+  } else {
+    episodesIndex.value = episodesIndex.value + 1
+  }
+  pluyrSwitchEpisode()
+}
+// 换集
+const pluyrSwitchEpisode = async () => {
+  // 删除字幕
+  await subtitlesInstance.value.freeTrack(getSubUrl('ass'))
+  window.localStorage.setItem('episodesIndex', episodesIndex.value)
+  // 更换字幕
+  await subtitlesInstance.value.setTrackByUrl(getSubUrl('ass'))
+  player.value.source = {
+    type: 'video',
+    sources: [
+      {
+        src: anime.list.content[episodesIndex.value].episodes,
+        type: 'video/mp4',
+      },
+    ],
+  }
+  // if (player.value.paused ) {
+  //   player.value.play()
+  // }
+}
+
+// 秒转分钟
+const getTime = (time) => {
+  let h = parseInt(time / 60 / 60)
+  let eh = h < 10 ? '0' + h : h
+  let m = parseInt((time / 60) % 60)
+  m = m < 10 ? '0' + m : m
+  let s = parseInt(time % 60)
+  s = s < 10 ? '0' + s : s
+  // 作为返回值返回
+  return `${h >= 1 ? eh + ':' : ''}${m}:${s}`
+}
+// 移动端事件
+
+// 音量数值
+const volumeNumber = ref()
+const plyrTouch = (e) => {
+  if (
+    navigator.userAgent.match(
+      /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+    )
+  ) {
+    // console.log('shouji')
+    let sx,
+      ex,
+      sy,
+      ey,
+      x = 5,
+      y = 5,
+      timer = null,
+      volume
+    const touchM = (me) => {
+      ex = me.touches[0].clientX
+      ey = me.touches[0].clientY
+      let changeX = sx - ex
+      let changeY = sy - ey
+      if (timer) clearTimeout(timer)
+      if (Math.abs(changeX) > Math.abs(changeY) && Math.abs(changeX) > x) {
+        // console.log('左右')
+        let currentTime = player.value.currentTime
+        let duration = player.value.duration
+        const v = document.querySelector('.slide span')
+        if (changeX < 0) {
+          // 右
+          changeClass('.slide', 'slide i-enter')
+          let t = currentTime + Math.abs(changeX)
+          v.innerHTML = getTime(videoTime.value)
+          videoTime.value = t >= duration ? duration : t
+        } else if (changeX > 0) {
+          changeClass('.slide', 'slide i-enter leftVolume')
+          let t = currentTime - Math.abs(changeX)
+          v.innerHTML = getTime(videoTime.value)
+          videoTime.value = t <= 0 ? 0 : t
+          // 左
+        }
+      } else if (
+        Math.abs(changeY) > Math.abs(changeX) &&
+        Math.abs(changeY) > y
+      ) {
+        let h = me.touches[0].target.clientHeight
+        const v = document.querySelector('.volume span')
+        if (changeY < 0) {
+          // 下
+          changeClass('.volume', 'volume i-enter')
+          let newVolume = volume - Math.abs(changeY) / h
+          let n = newVolume <= 0 ? 0 : newVolume
+          player.value.volume = n
+          v.innerHTML = parseInt(n * 100) + '%'
+        } else if (changeY > 0) {
+          // 上
+          changeClass('.volume', 'volume i-enter')
+          let newVolume = volume + Math.abs(changeY) / h
+          let n = newVolume >= 1 ? 1 : newVolume
+          player.value.volume = n
+          v.innerHTML = parseInt(n * 100) + '%'
+        }
+      }
+    }
+    const touchS = (se) => {
+      if (se.touches.length == 1) {
+        sx = se.touches[0].clientX
+        sy = se.touches[0].clientY
+        ex = sx
+        ey = sy
+        volume = player.value.volume
+        timer = setTimeout(() => {
+          // 长按
+          if (!player.value.paused) {
+            changeClass('.fast', 'fast i-enter')
+            player.value.speed = 3
+          }
+
+          player.value.off('touchmove', touchM)
+        }, 500)
+        player.value.on('touchmove', touchM)
+      }
+    }
+    player.value.on('touchstart', touchS)
+    player.value.on('touchend', () => {
+      changeClass('.fast', 'fast i-leave')
+      changeClass('.slide', 'slide i-leave')
+      changeClass('.volume', 'volume i-leave')
+      if (timer) {
+        player.value.speed = 1
+        clearTimeout(timer)
+      }
+
+      if (videoTime.value) {
+        player.value.currentTime = videoTime.value
+        videoTime.value = null
+      }
+    })
+    // 禁止移动端双击全屏
+    player.value.eventListeners.forEach(function (eventListener) {
+      if (eventListener.type === 'dblclick') {
+        eventListener.element.removeEventListener(
+          eventListener.type,
+          eventListener.callback,
+          eventListener.options
+        )
+      }
+    })
+    // 双击切换播放
+    player.value.on('dblclick', () => {
+      if (player.value.paused) {
+        player.value.play()
+      } else {
+        player.value.pause()
+      }
+    })
+
+    player.value.on('enterfullscreen', () => {
+      window.screen.orientation.lock('landscape')
+    })
+    player.value.on('exitfullscreen', () => {})
+  } else {
+    //电脑
+    // console.log('电脑')
+  }
+}
+onBeforeUnmount(() => {
+  if (subtitlesInstance.value && subtitlesInstance.value.dispose) {
+    subtitlesInstance.value.dispose()
+  }
+  if (player.value && player.value.destroy) {
+    player.value.destroy()
+  }
+})
+
+onMounted(() => {})
+</script>
+
+<style lang="stylus" scoped>
+@import './AnimeDetail.styl'
+</style>

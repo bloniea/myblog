@@ -83,6 +83,7 @@ import { useRoute, useRouter } from 'vue-router'
 import {
   computed,
   getCurrentInstance,
+  nextTick,
   onMounted,
   reactive,
   ref,
@@ -121,7 +122,9 @@ const getArticleDetail = async (id) => {
   const res = await getArticleApi(id)
   data.article = res.data.data
   loading.value = false
-  getComments(id)
+  nextTick(() => {
+    getComments(id)
+  })
   if (loginStatus.value) getIsStar()
 }
 
@@ -138,11 +141,18 @@ const commentTatol = ref(0)
 // 获取评论
 
 const getComments = async (id) => {
+  const loadingInstance = ElLoading.service({
+    target: '.comments',
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
   const res = await getCommentsApi(id, commentReq)
   if (res.status === 200 && res.ok) {
     data.comments = res.data.data
     commentTatol.value = res.data.total
   }
+  loadingInstance.close()
 }
 // 加载评论
 const addLoading = ref(false)

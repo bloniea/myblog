@@ -1,0 +1,13 @@
+prefix=/code/dist/libraries
+exec_prefix=/code/dist/libraries
+libdir=/code/dist/libraries/lib
+includedir=/code/dist/libraries/include
+
+Name: harfbuzz
+Description: HarfBuzz text shaping library
+Version: 2.8.2
+
+Libs: -L${libdir} -lharfbuzz
+Libs.private: -lm     
+Requires.private:  freetype2 >= 12.0.6 
+Cflags: -I${includedir}/harfbuzz

@@ -5,7 +5,7 @@ const showText = (arr, option) => {
   let index = 0;
   document.documentElement.addEventListener("click", function (event) {
     let x = event.pageX
-    console.log(x)
+    // console.log(x)
     let y = event.pageY
     let text = document.createElement("span")
     text.setAttribute("class", 'text_popup')

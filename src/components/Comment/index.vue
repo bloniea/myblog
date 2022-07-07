@@ -97,6 +97,7 @@ import {
   computed,
   ref,
   onMounted,
+  nextTick,
 } from '@vue/runtime-core'
 import { formatDate } from '@/comm/function.js'
 import { useStore } from 'vuex'

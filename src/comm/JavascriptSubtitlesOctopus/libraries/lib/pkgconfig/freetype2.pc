@@ -1,0 +1,14 @@
+prefix=/code/dist/libraries
+exec_prefix=/code/dist/libraries
+libdir=/code/dist/libraries/lib
+includedir=/code/dist/libraries/include
+
+Name: FreeType 2
+URL: https://freetype.org
+Description: A free, high-quality, and portable font engine.
+Version: 24.0.18
+Requires:
+Requires.private: harfbuzz >= 2.0.0, libbrotlidec
+Libs: -L${libdir} -lfreetype
+Libs.private: 
+Cflags: -I${includedir}/freetype2

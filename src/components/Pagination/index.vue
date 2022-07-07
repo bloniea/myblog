@@ -69,7 +69,7 @@ const next = () => {
     cursor $my-cursor-pointer
     transition all 0.3s
     &:hover {
-      background #CD93E4
+      background #6d0695
     }
   }
 }
