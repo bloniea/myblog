@@ -11,7 +11,7 @@
           webkit-playsinline="false"
         >
           <source
-            :src="anime.list.content[episodesIndex].episodes"
+            :src="anime.list.content[episodesIndex].episode"
             type="video/mp4"
           />
           <track
@@ -507,7 +507,7 @@ const pluyrSwitchEpisode = async () => {
     type: 'video',
     sources: [
       {
-        src: anime.list.content[episodesIndex.value].episodes,
+        src: anime.list.content[episodesIndex.value].episode,
         type: 'video/mp4',
       },
     ],
