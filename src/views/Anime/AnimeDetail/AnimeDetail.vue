@@ -114,7 +114,7 @@
         </transition>
       </div>
       <div class="tip">
-        温馨提示：视频很大，移动端国产浏览器劫持了视频元素的问题，暂时没有找到解决方案
+        温馨提示：视频很大，不支持mvk格式的浏览器无法播放，移动端大部分国产浏览器劫持了视频元素的问题，暂时没有找到解决方案
       </div>
       <div class="title">安达与岛村</div>
       <el-tabs type="border-card">
@@ -173,16 +173,7 @@ import { useStore } from 'vuex'
 const route = useRoute()
 const router = useRouter()
 const loading = ref(true)
-// 如果不存在路由参数不存在则跳转到404页面
-const isId = () => {
-  if (!route.query.id) {
-    router.push({ name: 'NotFound' })
-  }
-}
-isId()
 
-// 监听路由变化
-// watch(route, () => isId())
 const anime = reactive({
   list: '',
   comments: [],
@@ -206,6 +197,7 @@ const getComments = async () => {
     text: 'Loading',
     background: 'rgba(0, 0, 0, 0.7)',
   })
+
   const res = await getCommentsApi(route.query.id, commentReq)
   if (res.status === 200 && res.ok) {
     anime.comments = res.data.data
@@ -259,17 +251,22 @@ const loadAdd = () => {
 // 根据传过来的id获取动漫信息
 const getAnime = async () => {
   const id = route.query.id
+  console.log(route.query.id)
   if (id) {
     loading.value = true
     const res = await getAnimeApi(id)
     if (res.status == 200 && res.ok) {
       anime.list = res.data.data
+      loading.value = false
+      nextTick(() => {
+        initPlur()
+        getComments()
+      })
+    } else {
+      router.push({ name: 'NotFound' })
     }
-    loading.value = false
-    nextTick(() => {
-      initPlur()
-      getComments()
-    })
+  } else {
+    router.push({ name: 'NotFound' })
   }
 }
 getAnime()

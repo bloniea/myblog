@@ -61,6 +61,8 @@ const getCategoryDetail = async () => {
 
     data.total = res.data.total
     loading.value = false
+  } else {
+    router.push({ name: 'NotFound' })
   }
 }
 getCategoryDetail()

@@ -120,12 +120,16 @@ const getArticleDetail = async (id) => {
   loading.value = true
   // 路由传过来的id
   const res = await getArticleApi(id)
-  data.article = res.data.data
-  loading.value = false
-  nextTick(() => {
-    getComments(id)
-  })
-  if (loginStatus.value) getIsStar()
+  if (res.status == 200 && res.ok) {
+    data.article = res.data.data
+    loading.value = false
+    nextTick(() => {
+      getComments(id)
+    })
+    if (loginStatus.value) getIsStar()
+  } else {
+    router.push({ name: 'NotFound' })
+  }
 }
 
 getArticleDetail(data.id)
