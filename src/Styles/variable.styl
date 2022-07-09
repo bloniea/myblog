@@ -4,3 +4,27 @@ $secondary-fontColor = #6a6a6a
 $sign-fontColor = #909399
 $my-cursor-default = url('@/assets/default.cur'), default
 $my-cursor-pointer = url('@/assets/pointer.cur'), pointer
+.gradient-title {
+  background-image linear-gradient(left, #df79fe, #e07800 25%, #df79fe 50%, #e07800 75%, #df79fe)
+  background-image -moz-linear-gradient(left, #df79fe, #e07800 25%, #df79fe 50%, #e07800 75%, #df79fe)
+  background-image -webkit-linear-gradient(left, #df79fe, #e07800 25%, #df79fe 50%, #e07800 75%, #df79fe)
+  background-image -ms-linear-gradient(left, #df79fe, #e07800 25%, #df79fe 50%, #e07800 75%, #df79fe)
+  text-fill-color transparent
+  -webkit-text-fill-color transparent
+  -moz-text-fill-color transparent
+  -ms-text-fill-color transparent
+  background-clip text
+  -webkit-background-clip text
+  -moz-background-clip text
+  -ms-background-clip text
+  background-size 200% 100%
+  animation masked-animation 4s infinite linear
+}
+@keyframes masked-animation {
+  0% {
+    background-position 0 0
+  }
+  100% {
+    background-position -100% 0
+  }
+}

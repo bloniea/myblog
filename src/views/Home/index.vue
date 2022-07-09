@@ -9,9 +9,15 @@
     >
       <!-- 文字在左，图片在右 -->
 
-      <div class="article-box bg-shadow" v-if="i % 2 !== 0">
+      <div
+        class="article-box bg-shadow"
+        v-if="i % 2 !== 0"
+        data-aos="fade-right"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+      >
         <div class="article-message">
-          <h3 class="article-title">
+          <h3 class="article-title gradient-title">
             {{ article.title }}
           </h3>
           <div
@@ -63,7 +69,13 @@
         </div>
       </div>
       <!-- 文字在右，图片在左 -->
-      <div class="article-box bg-shadow" v-else>
+      <div
+        class="article-box bg-shadow"
+        v-else
+        data-aos="fade-left"
+        data-aos-offset="300"
+        data-aos-easing="ease-in-sine"
+      >
         <div class="article-img">
           <el-image lazy :src="article.img_url" class="img" fit="cover">
             <template #error>
@@ -78,7 +90,7 @@
           </el-image>
         </div>
         <div class="article-message">
-          <h3 class="article-title">
+          <h3 class="article-title gradient-title">
             {{ article.title }}
           </h3>
 
@@ -121,6 +133,9 @@
       v-for="article in articlesData.articles"
       :key="article._id"
       @click="toArticleDetail(article._id)"
+      data-aos="flip-left"
+      data-aos-easing="ease-out-cubic"
+      data-aos-duration="2000"
     >
       <div class="article-box bg-shadow">
         <div class="article-img">
@@ -137,7 +152,7 @@
           </el-image>
         </div>
         <div class="article-message">
-          <h3 class="article-title">
+          <h3 class="article-title gradient-title">
             {{ article.title }}
           </h3>
           <div

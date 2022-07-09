@@ -16,6 +16,9 @@
         v-for="friend in friends.list"
         :key="friend.id"
         @click="to(friend.url)"
+        data-aos="flip-left"
+        data-aos-easing="ease-out-cubic"
+        data-aos-duration="2000"
       >
         <el-image lazy fit="cover" :src="friend.img_url"></el-image>
         <div class="layer">

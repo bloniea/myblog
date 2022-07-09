@@ -21,8 +21,8 @@ const config = {
       token: 'access_token',
       api: 'https://api.github.com/'
     },
-    redirect_uri: 'http://localhost:3000/',
-    // redirect_uri: 'https://bloniea.xyz/',
+    // redirect_uri: 'http://localhost:3000/',
+    redirect_uri: 'https://bloniea.xyz/',
   },
   avatar_error: 'https://cloud.bloniea.xyz/images/avatar_error.png',
   avatar_default: 'https://cloud.bloniea.xyz/images/default_avatar.png',

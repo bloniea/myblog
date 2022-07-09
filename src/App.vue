@@ -26,11 +26,13 @@ import Copyright from '@/components/Copyright/index.vue'
   min-height 100vh
   flex-direction column
   justify-content space-between
+  min-width 320px
 
 }
 main {
   width 800px
   margin 0px auto
+  min-height 80vh
   @media screen and (max-width 834px) {
     width 100%
   }

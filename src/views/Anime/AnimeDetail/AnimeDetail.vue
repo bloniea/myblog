@@ -1,14 +1,26 @@
 <template>
   <Loading v-if="loading"></Loading>
   <div class="anime-detail" v-else>
-    <MyContainer class="title-content">
-      <div class="video-warpper">
-        <video ref="myVideo" controls>
+    <MyContainer>
+      <div class="video-warpper" id="video-warpper">
+        <video
+          ref="myVideo"
+          controls
+          preload="auto"
+          playsinline="false"
+          webkit-playsinline="false"
+        >
           <source
             :src="anime.list.content[episodesIndex].episodes"
             type="video/mp4"
           />
-          <track kind="captions" srclang="中文" :src="getSubUrl('vtt')" />
+          <track
+            kind="captions"
+            srclang="中文"
+            default
+            v-if="getSubUrl('vtt')"
+            :src="getSubUrl('vtt')"
+          />
 
           <p class="vjs-no-js">
             To view this video please enable JavaScript, and consider upgrading
@@ -18,8 +30,92 @@
             >
           </p>
         </video>
+        <transition name="title">
+          <div class="video-title-top" v-if="controlShow">
+            <div class="video-title">
+              第{{ episodesIndex + 1 }}集 -
+              {{ anime.list.content[episodesIndex].title }}
+            </div>
+          </div>
+        </transition>
+        <transition name="i">
+          <div class="fast" v-if="fastShow">
+            <i>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="30"
+                height="30"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  d="M12 13.333l-9.223 6.149A.5.5 0 0 1 2 19.066V4.934a.5.5 0 0 1 .777-.416L12 10.667V4.934a.5.5 0 0 1 .777-.416l10.599 7.066a.5.5 0 0 1 0 .832l-10.599 7.066a.5.5 0 0 1-.777-.416v-5.733z"
+                />
+              </svg>
+            </i>
+            <span class="label">×3加速播放</span>
+          </div>
+        </transition>
+        <transition name="i">
+          <div class="slide" v-if="slideShow">
+            <div v-if="slideLeftShow">
+              <i>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="26"
+                  height="26"
+                >
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path
+                    d="M12 13.333l-9.223 6.149A.5.5 0 0 1 2 19.066V4.934a.5.5 0 0 1 .777-.416L12 10.667V4.934a.5.5 0 0 1 .777-.416l10.599 7.066a.5.5 0 0 1 0 .832l-10.599 7.066a.5.5 0 0 1-.777-.416v-5.733z"
+                  />
+                </svg>
+              </i>
+              <span class="time">{{ getTime(videoTime) }}</span
+              >`
+            </div>
+            <div v-else>
+              <i>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="26"
+                  height="26"
+                >
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path
+                    d="M12 10.667l9.223-6.149a.5.5 0 0 1 .777.416v14.132a.5.5 0 0 1-.777.416L12 13.333v5.733a.5.5 0 0 1-.777.416L.624 12.416a.5.5 0 0 1 0-.832l10.599-7.066a.5.5 0 0 1 .777.416v5.733z"
+                  />
+                </svg>
+              </i>
+              <span class="time">{{ getTime(videoTime) }}</span
+              >`
+            </div>
+          </div>
+        </transition>
+        <transition name="i">
+          <div class="volume" v-if="volumeShow">
+            <i>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="30"
+                height="30"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path
+                  d="M5.889 16H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h3.889l5.294-4.332a.5.5 0 0 1 .817.387v15.89a.5.5 0 0 1-.817.387L5.89 16zm13.517 4.134l-1.416-1.416A8.978 8.978 0 0 0 21 12a8.982 8.982 0 0 0-3.304-6.968l1.42-1.42A10.976 10.976 0 0 1 23 12c0 3.223-1.386 6.122-3.594 8.134zm-3.543-3.543l-1.422-1.422A3.993 3.993 0 0 0 16 12c0-1.43-.75-2.685-1.88-3.392l1.439-1.439A5.991 5.991 0 0 1 18 12c0 1.842-.83 3.49-2.137 4.591z"
+                />
+              </svg>
+            </i>
+            <span class="label">{{ volumeVal }}</span>
+          </div>
+        </transition>
       </div>
-
+      <div class="tip">
+        温馨提示：视频很大，移动端国产浏览器劫持了视频元素的问题，暂时没有找到解决方案
+      </div>
       <div class="title">安达与岛村</div>
       <el-tabs type="border-card">
         <el-tab-pane label="剧情概要">
@@ -178,7 +274,7 @@ const getAnime = async () => {
 }
 getAnime()
 
-// 后端真实地址
+// 存放字幕文件真实地址
 const url = 'https://cloud.bloniea.xyz/library/myblog/'
 // 显示字幕与否
 const subtitles = ref(true)
@@ -234,100 +330,27 @@ const loadSubtitles = () => {
         '/blogLibrary/JavascriptSubtitlesOctopus/dist/js/subtitles-octopus-worker.js',
     }
     subtitlesInstance.value = new SubtitlesOctopus(options)
+
+    subtitlesInstance.value.onReadyEvent = () => {
+      // console.log(123)
+    }
   } else {
     if (subtitlesInstance.value && subtitlesInstance.value.dispose) {
       subtitlesInstance.value.dispose()
     }
   }
 }
-const videoTime = ref(null)
-// 插入元素(不知如何显示在全屏之上只能这样插入了)
-const inserDom = () => {
-  // title
-  const titleDom = document.createElement('div')
-  titleDom.className = 'video-title-top'
-  titleDom.innerHTML = ` <div class="video-title">
-              第${episodesIndex.value + 1}集 -
-              ${anime.list.content[episodesIndex.value].title}
-            </div>`
-  const parseDom = document.querySelector('.plyr__video-wrapper')
-  const video = document.querySelector('video')
-  parseDom.insertBefore(titleDom, video)
-  // 快进
-  const fastDom = document.createElement('div')
-  fastDom.className = 'fast i-leave'
-  fastDom.innerHTML = ` <i>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="30"
-                height="30"
-              >
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path
-                  d="M12 13.333l-9.223 6.149A.5.5 0 0 1 2 19.066V4.934a.5.5 0 0 1 .777-.416L12 10.667V4.934a.5.5 0 0 1 .777-.416l10.599 7.066a.5.5 0 0 1 0 .832l-10.599 7.066a.5.5 0 0 1-.777-.416v-5.733z"
-                />
-              </svg>
-            </i>
-            <span class="label">×3加速播放</span>`
-  parseDom.insertBefore(fastDom, video)
-  // 左右滑动
-  const slide = document.createElement('div')
-  slide.className = 'slide i-leave '
-  slide.innerHTML = `
-            <i>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="26"
-                  height="26"
-                >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path
-                    d="M12 13.333l-9.223 6.149A.5.5 0 0 1 2 19.066V4.934a.5.5 0 0 1 .777-.416L12 10.667V4.934a.5.5 0 0 1 .777-.416l10.599 7.066a.5.5 0 0 1 0 .832l-10.599 7.066a.5.5 0 0 1-.777-.416v-5.733z"
-                  />
-                </svg>
-              </i>
-              <span class="time">${getTime(videoTime.value)}</span>`
-  parseDom.insertBefore(slide, video)
-  // 上下滑动
-  const volume = document.createElement('div')
-  volume.className = 'volume i-leave'
-  volume.innerHTML = `  <i>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="30"
-                height="30"
-              >
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path
-                  d="M5.889 16H2a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h3.889l5.294-4.332a.5.5 0 0 1 .817.387v15.89a.5.5 0 0 1-.817.387L5.89 16zm13.517 4.134l-1.416-1.416A8.978 8.978 0 0 0 21 12a8.982 8.982 0 0 0-3.304-6.968l1.42-1.42A10.976 10.976 0 0 1 23 12c0 3.223-1.386 6.122-3.594 8.134zm-3.543-3.543l-1.422-1.422A3.993 3.993 0 0 0 16 12c0-1.43-.75-2.685-1.88-3.392l1.439-1.439A5.991 5.991 0 0 1 18 12c0 1.842-.83 3.49-2.137 4.591z"
-                />
-              </svg>
-            </i>
-            <span class="label">${volumeNumber.value} %</span>`
-  parseDom.insertBefore(volume, video)
-}
-// 改变class进行显示隐藏
-const changeClass = (dom, name) => {
-  const d = document.querySelector(dom)
-  d.className = name
-}
+
+const controlShow = ref(true)
 const setVideoTitle = () => {
-  const titleDom = document.querySelector('.video-title-top')
-  // console.log(titleDom)
   player.value.on('controlsshown', () => {
-    // titleDom.className = 'video-title-top enter'
-    changeClass('.video-title-top', 'video-title-top title-enter')
+    controlShow.value = true
   })
   player.value.on('controlshidden', () => {
-    // titleDom.className = 'video-title-top leave'
-    changeClass('.video-title-top', 'video-title-top title-leave')
+    controlShow.value = false
   })
 }
 
-const addTipStatus = () => {}
 // videojs 实例
 const player = ref('')
 // video dom
@@ -348,6 +371,13 @@ const initPlur = async () => {
       'airplay',
     ],
     settings: ['speed'],
+    fullscreen: {
+      enabled: true,
+      fallback: true,
+      iosNative: false,
+      container: '.video-warpper',
+    },
+    ratio: '16:9',
     // invertTime: false,
     // debug: true,
   })
@@ -367,7 +397,18 @@ const initPlur = async () => {
     )
   })
 }
+const videoPlay = () => {
+  if (subtitles.value) {
+    subtitlesInstance.value.onReadyEvent = () => {
+      player.value.play()
+    }
+  } else {
+    player.value.play()
+  }
+}
+
 // plyr 视频播放器就绪
+
 const plyrReady = () => {
   const controlBar = document.getElementsByClassName('plyr__controls')[0]
   // 添加字幕按钮
@@ -421,17 +462,12 @@ const plyrReady = () => {
   })
 
   // 设置video标题
-  inserDom()
   setVideoTitle()
-  addTipStatus()
-
   // 加载ass字幕
   if (SubtitlesOctopus) loadSubtitles()
-
   plyrTouch()
-
-  player.value.play()
-
+  videoPlay()
+  // 获取播放进度
   player.value.on('loadeddata', () => {
     const currentTime = localStorage.getItem(
       `${anime.list._id}${episodesIndex.value}`
@@ -440,6 +476,13 @@ const plyrReady = () => {
       player.value.currentTime = Number(currentTime)
     }
   })
+
+  // player.value.on('waiting', () => {
+  //   console.log('waiting')
+  // })
+  // player.value.on('playing', () => {
+  //   console.log('playing')
+  // })
 }
 const switchEpisode = (i) => {
   episodesIndex.value = i
@@ -485,10 +528,16 @@ const getTime = (time) => {
   // 作为返回值返回
   return `${h >= 1 ? eh + ':' : ''}${m}:${s}`
 }
-// 移动端事件
 
-// 音量数值
-const volumeNumber = ref()
+// 移动端事件
+const slideShow = ref(false)
+const slideLeftShow = ref(false)
+const fastShow = ref(false)
+const volumeShow = ref(false)
+const volumeVal = ref()
+const videoTime = ref()
+const top = ref(true)
+const left = ref(true)
 const plyrTouch = (e) => {
   if (
     navigator.userAgent.match(
@@ -512,19 +561,21 @@ const plyrTouch = (e) => {
       if (timer) clearTimeout(timer)
       if (Math.abs(changeX) > Math.abs(changeY) && Math.abs(changeX) > x) {
         // console.log('左右')
+        if (!left.value) return
+        top.value = false
+        slideShow.value = true
         let currentTime = player.value.currentTime
         let duration = player.value.duration
-        const v = document.querySelector('.slide span')
+
         if (changeX < 0) {
           // 右
-          changeClass('.slide', 'slide i-enter')
+
+          slideLeftShow.value = true
           let t = currentTime + Math.abs(changeX)
-          v.innerHTML = getTime(videoTime.value)
           videoTime.value = t >= duration ? duration : t
         } else if (changeX > 0) {
-          changeClass('.slide', 'slide i-enter leftVolume')
+          slideLeftShow.value = false
           let t = currentTime - Math.abs(changeX)
-          v.innerHTML = getTime(videoTime.value)
           videoTime.value = t <= 0 ? 0 : t
           // 左
         }
@@ -532,22 +583,23 @@ const plyrTouch = (e) => {
         Math.abs(changeY) > Math.abs(changeX) &&
         Math.abs(changeY) > y
       ) {
+        if (!top.value) return
+        left.value = false
+        volumeShow.value = true
         let h = me.touches[0].target.clientHeight
-        const v = document.querySelector('.volume span')
         if (changeY < 0) {
           // 下
-          changeClass('.volume', 'volume i-enter')
+
           let newVolume = volume - Math.abs(changeY) / h
           let n = newVolume <= 0 ? 0 : newVolume
           player.value.volume = n
-          v.innerHTML = parseInt(n * 100) + '%'
+          volumeVal.value = parseInt(n * 100) + '%'
         } else if (changeY > 0) {
           // 上
-          changeClass('.volume', 'volume i-enter')
           let newVolume = volume + Math.abs(changeY) / h
           let n = newVolume >= 1 ? 1 : newVolume
           player.value.volume = n
-          v.innerHTML = parseInt(n * 100) + '%'
+          volumeVal.value = parseInt(n * 100) + '%'
         }
       }
     }
@@ -561,8 +613,8 @@ const plyrTouch = (e) => {
         timer = setTimeout(() => {
           // 长按
           if (!player.value.paused) {
-            changeClass('.fast', 'fast i-enter')
             player.value.speed = 3
+            fastShow.value = true
           }
 
           player.value.off('touchmove', touchM)
@@ -572,15 +624,17 @@ const plyrTouch = (e) => {
     }
     player.value.on('touchstart', touchS)
     player.value.on('touchend', () => {
-      changeClass('.fast', 'fast i-leave')
-      changeClass('.slide', 'slide i-leave')
-      changeClass('.volume', 'volume i-leave')
+      top.value = true
+      left.value = true
+      slideShow.value = false
+      fastShow.value = false
+      volumeShow.value = false
       if (timer) {
         player.value.speed = 1
         clearTimeout(timer)
       }
-
       if (videoTime.value) {
+        // console.log(videoTime.value)
         player.value.currentTime = videoTime.value
         videoTime.value = null
       }
@@ -605,7 +659,11 @@ const plyrTouch = (e) => {
     })
 
     player.value.on('enterfullscreen', () => {
-      window.screen.orientation.lock('landscape')
+      let orientation =
+        window.screen.orientation ||
+        window.screen.mozOrientation ||
+        window.screen.msOrientation
+      if (orientation.lock) orientation.lock('landscape')
     })
     player.value.on('exitfullscreen', () => {})
   } else {

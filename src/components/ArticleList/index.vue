@@ -2,9 +2,11 @@
   <article
     class="bg-shadow"
     v-if="!articles.length"
+    data-aos="flip-left"
+    data-aos-easing="ease-out-cubic"
+    data-aos-duration="2000"
   >
     <div class="null">空空如也~</div>
-
   </article>
   <article
     v-else
@@ -12,45 +14,39 @@
     :key="article._id"
     @click="toArticleDetail(article._id)"
     class="bg-shadow"
+    data-aos="flip-left"
+    data-aos-easing="ease-out-cubic"
+    data-aos-duration="2000"
   >
     <div class="article-img">
       <!-- <img
         :src="article.img_url"
         alt=""
       >-->
-      <el-image
-        lazy
-        :src="article.img_url"
-        fit="cover"
-      >
+      <el-image lazy :src="article.img_url" fit="cover">
         <template #error>
           <div class="image-slot">
-            <el-image
-              lazy
-              :src="config.defaultImgUrl"
-              fit="cover"
-            ></el-image>
+            <el-image lazy :src="config.defaultImgUrl" fit="cover"></el-image>
           </div>
         </template>
       </el-image>
     </div>
 
     <div class="article-message">
-      <h3 class="article-title">
-        {{article.title}}
+      <h3 class="article-title gradient-title">
+        {{ article.title }}
       </h3>
       <div
         class="article-content"
         v-html="beforeArticle(article.content)"
-      >
-      </div>
+      ></div>
       <div class="more">
         <i class="iconfont iconmore"></i>
       </div>
       <div class="article-info">
         <div class="date">
           <span class="iconfont icondate"></span>
-          {{formatDate(article.created_at)}}
+          {{ formatDate(article.created_at) }}
         </div>
         <!-- <div
           class="label"
@@ -61,16 +57,16 @@
         </div> -->
         <div
           class="category"
-          @click.stop="toCategory(article.category._id,article.category.cat_name)"
+          @click.stop="
+            toCategory(article.category._id, article.category.cat_name)
+          "
         >
           <span class="iconfont iconfenlei"></span>
-          {{article.category.cat_name}}
+          {{ article.category.cat_name }}
         </div>
       </div>
     </div>
-
   </article>
-
 </template>
 
 <script setup>
@@ -80,7 +76,7 @@ import config from '@/config'
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
-  articles: Array
+  articles: Array,
 })
 onMounted(() => {
   const articles = props.articles
@@ -91,7 +87,11 @@ const toArticleDetail = (id) => {
 }
 const router = useRouter()
 const toCategory = (id, name) => {
-  router.push({ name: 'CategoryDetail', params: { id: id }, query: { name: name } })
+  router.push({
+    name: 'CategoryDetail',
+    params: { id: id },
+    query: { name: name },
+  })
 }
 </script>
 

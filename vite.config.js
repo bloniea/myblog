@@ -37,8 +37,8 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        // target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
-        target: 'http://localhost:5555/api/open/',
+        target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
+        // target: 'http://localhost:5555/api/open/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },

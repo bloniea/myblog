@@ -4,18 +4,23 @@
     <router-view v-if="route.meta.anime"></router-view>
     <div class="anime" v-else>
       <MyContainer>
-        <div class="tip">女孩子之间什么的，是不可能的啦</div>
+        <div class="tip gradient-title">女生之间不可能的故事</div>
         <div class="container">
           <div
             class="list bg-shadow"
             v-for="list in anime.list"
             :key="list._id"
             @click="toDetail(list._id)"
+            data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="2000"
           >
             <div class="cover">
               <el-image fit="cover" :src="list.img_url"></el-image>
             </div>
-            <div class="title">{{ list.name }}</div>
+            <div class="title">
+              {{ list.name }}({{ list.content.length }}话)
+            </div>
           </div>
         </div>
       </MyContainer>

@@ -1,15 +1,18 @@
 .anime-detail {
   .my-container {
     :deep(.video-warpper) {
+      // width 500px
       position relative
       overflow hidden
-      z-index 999
+      // z-index 999
       ::cue {
         background transparent
       }
+      .plyr {
+        height 100%
+      }
       .video-title-top {
         position absolute
-        transition opacity 0.4s ease-in-out, transform 0.4s ease-in-out
         top 0
         left 0
         right 0
@@ -24,11 +27,14 @@
           font-size 1.125rem
         }
       }
-      .title-enter {
+      .title-enter-active, .title-leave-active {
+        transition opacity 0.4s ease-in-out, transform 0.4s ease-in-out
+      }
+      .title-enter-to, .title-leave-from {
         transform translateY(0%)
         opacity 1
       }
-      .title-leave {
+      .title-leave-to, .title-enter-from {
         transform translateY(-100%)
         opacity 0
       }
@@ -43,10 +49,6 @@
         transform translateX(-50%)
         width 120px
         background rgba(0, 0, 0, 0.4)
-        transition opacity 0.4s
-        display flex
-        justify-content space-around
-        transition opacity 0.4s ease-in-out, transform 0.4s ease-in-out
         i {
           fill #fff
         }
@@ -54,9 +56,10 @@
           color #fff
           line-height 30px
         }
-      }
-      .leftVolume svg {
-        transform rotate(180deg)
+        div {
+          display flex
+          justify-content space-around
+        }
       }
       .fast, .volume {
         display flex
@@ -66,10 +69,13 @@
           line-height 30px
         }
       }
-      .i-enter {
+      .i-enter-active, .i-leave-active {
+        transition opacity 0.4s ease-in-out
+      }
+      .i-enter, .i-leave-from {
         opacity 1
       }
-      .i-leave {
+      .i-leave, .i-enter-from {
         opacity 0
       }
       .subtitles-btn {
@@ -89,6 +95,11 @@
       }
     }
     margin-top 20px
+    .tip {
+      font-size 0.875rem
+      color $baseColor
+      text-align center
+    }
     .title {
       padding 10px
       font-size 24px

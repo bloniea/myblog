@@ -12,6 +12,9 @@ import showText from './plugins/showText.js'
 import { vLoading } from 'element-plus/es/components/loading/src/directive'
 import store from './store'
 import config from './config'
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+AOS.init();
 let title = config.title
 const titleChange = () => {
   var keyList = title.split("");

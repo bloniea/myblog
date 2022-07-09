@@ -1,11 +1,9 @@
 <template>
-  <div class="back-to-top">
-    <div
-      class="cat"
-      :style="'transform:translateY(-' + data.height + 'px)'"
-      @click="toTop"
-    ></div>
-  </div>
+  <div
+    class="back-to-top"
+    :style="'transform:translateY(-' + data.height + 'px)'"
+    @click="toTop"
+  ></div>
 </template>
 
 <script setup>
@@ -58,13 +56,11 @@ body {
   top 0
   right 20px
   width 70px
-  .cat {
-    background url('back-top.png')
-    width 100%
-    height 100%
-    transition all 0.3s
-    cursor $my-cursor-pointer
-  }
+  background url('back-top.png')
+  // width 100%
+  // height 100%
+  transition all 0.3s
+  cursor $my-cursor-pointer
   @media screen and (max-width 768px) {
     display none
   }
