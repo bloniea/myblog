@@ -36,7 +36,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
+        target: 'https://myblog-nodejs-kyiaei3vl-bloniea1.vercel.app/api/open/',
         // target: 'http://localhost:5555/api/open/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
