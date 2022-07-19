@@ -4,7 +4,7 @@
     { "source": "/(.*)", "destination": "/" },
     {
       "source": "/blogApi/(.*)*",
-      "destination": "https://myblog-nodejs-2jlyo0d4n-bloniea1.vercel.app/api/open/$1*"
+      "destination": "https://myblog-nodejs.vercel.app/api/open/"
     }
   ]
 }
