@@ -36,7 +36,6 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
-
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },
