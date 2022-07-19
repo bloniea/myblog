@@ -37,7 +37,7 @@
 <script setup>
 import MyContainer from '@/components/MyContainer/index.vue'
 import { getCurrentInstance, reactive, ref } from 'vue'
-import Loading from '@/components/oading/index.vue'
+import Loading from '@/components/Loading/index.vue'
 import config from '@/config'
 import { getFriendsApi } from '@/comm/fetch'
 const { proxy } = getCurrentInstance()
