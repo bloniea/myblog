@@ -1,3 +1,9 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://myblog-nodejs-2jlyo0d4n-bloniea1.vercel.app/api/open/"
+    }
+   ]
 }
