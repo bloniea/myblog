@@ -33,7 +33,6 @@ export default defineConfig({
   },
 
   server: {
-    host: '0.0.0.0',
     proxy: {
       '/api': {
         target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
@@ -55,6 +54,11 @@ export default defineConfig({
         target: 'https://cloud.bloniea.xyz/library/myblog/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/blogLibrary/, '')
+      },
+      '/cloudVideo': {
+        target: 'https://drive.bloniea.xyz/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/cloudVideo/, '')
       }
     },
 

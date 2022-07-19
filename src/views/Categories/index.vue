@@ -47,7 +47,7 @@ import Pagination from '@/components/Pagination/index.vue'
 import MyContainer from '@/components/MyContainer/index.vue'
 import { getCurrentInstance, reactive } from '@vue/runtime-core'
 import { formatDate } from '@/comm/function.js'
-import Loading from '@/components/loading/index.vue'
+import Loading from '@/components/Loading/index.vue'
 import { getCategoriesApi } from '@/comm/fetch'
 const route = useRoute()
 const loading = ref(true)

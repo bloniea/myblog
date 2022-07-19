@@ -43,6 +43,7 @@ const config = {
   tools: [
     { img_url: "https://cloud.bloniea.xyz/images/1000-1.jpg", router_name: "Reg", title: "正则表达式", subtitle: "在线测试正则表达式" },
     { img_url: "https://cloud.bloniea.xyz/images/1000-2.jpg", router_name: "Qrcode", title: "二维码生成", subtitle: "在线生成二维码" },
+    { img_url: "https://cloud.bloniea.xyz/images/1000-6.jpg", router_name: "Ico", title: "图片转ico格式", subtitle: "在线图片转换ico格式" },
   ]
 
 }

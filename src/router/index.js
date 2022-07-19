@@ -9,13 +9,15 @@ const ReloadSearch = () => import('../views/ReloadSearch/index.vue')
 const Refresh = () => import('../views/Refresh/index.vue')
 const Me = () => import('../views/Me/index.vue')
 const About = () => import('../views/About/index.vue')
+const Anime = () => import('../views/Anime/Anime.vue')
+const AnimeDetail = () => import('../views/Anime/AnimeDetail/AnimeDetail.vue')
+
 const Friends = () => import('../views/Friends/index.vue')
 const NotFound = () => import('../views/NotFound/index.vue')
 const Tool = () => import('../views/Tool/index.vue')
 const Reg = () => import('../views/Tool/Reg/index.vue')
 const Qrcode = () => import('../views/Tool/Qrcode/index.vue')
-const Anime = () => import('../views/Anime/Anime.vue')
-const AnimeDetail = () => import('../views/Anime/AnimeDetail/AnimeDetail.vue')
+const Ico = () => import('../views/Tool/Ico/Ico.vue')
 const routes = [
   {
     path: '/',
@@ -89,7 +91,7 @@ const routes = [
         name: 'AnimeDetail',
         component: AnimeDetail,
         meta: { anime: true }
-      },
+      }
     ]
   },
 
@@ -108,6 +110,12 @@ const routes = [
         path: "qrcode",
         name: "Qrcode",
         component: Qrcode,
+        meta: { tool: true }
+      },
+      {
+        path: "ico",
+        name: "Ico",
+        component: Ico,
         meta: { tool: true }
       }
     ]
