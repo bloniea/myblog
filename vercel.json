@@ -3,8 +3,8 @@
   "rewrites": [
     { "source": "/(.*)", "destination": "/" },
     {
-      "source": "/api/(.*)",
-      "destination": "https://myblog-nodejs-2jlyo0d4n-bloniea1.vercel.app/api/open/$1"
+      "source": "/blogApi/:match*",
+      "destination": "https://myblog-nodejs-2jlyo0d4n-bloniea1.vercel.app/api/open/:match*"
     }
   ]
 }
