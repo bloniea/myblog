@@ -36,7 +36,7 @@ export default defineConfig({
     proxy: {
       '/blogapi': {
         target: 'https://myblog-nodejs.vercel.app/api/open/',
-        // target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
+        // target: 'https://api.bloniea.xyz/blogAdmin/api/open/11',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/blogapi/, '')
       },
