@@ -23,7 +23,7 @@ export const getLabelsApi = async (params) => {
 }
 // 获取所有友链
 export const getFriendsApi = async (params) => {
-  const url = api + '/friends/'
+  const url = api + '/friends'
   return await fetchApi(url, { params: params })
 }
 // 获取所有分类
@@ -54,13 +54,13 @@ export const getCommentsApi = async (id, params) => {
 
 // 获取关于我的文章
 export const getAboutArticles = async (params) => {
-  const url = api + '/aboutArticles/'
+  const url = api + '/aboutArticles'
   return await fetchApi(url, { params: params })
 }
 
 // 获取所有动漫
 export const getAboutAnimesApi = async (params) => {
-  const url = api + '/animes/'
+  const url = api + '/animes'
   return await fetchApi(url, { params: params })
 }
 

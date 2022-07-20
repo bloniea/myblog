@@ -5,6 +5,11 @@
       "source": "/blogapi/:match*",
       "destination": "https://myblog-nodejs.vercel.app/api/open/:match*"
     },
+    {
+      "source": "/blogLibrary/:match*",
+      "destination": "https://cloud.bloniea.xyz/library/myblog/:match*"
+    },
+
     { "source": "/(.*)", "destination": "/" }
   ]
 }

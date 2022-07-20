@@ -54,11 +54,6 @@ export default defineConfig({
         target: 'https://cloud.bloniea.xyz/library/myblog/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/blogLibrary/, '')
-      },
-      '/cloudVideo': {
-        target: 'https://drive.bloniea.xyz/',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/cloudVideo/, '')
       }
     },
 
