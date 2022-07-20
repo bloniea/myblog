@@ -1,4 +1,4 @@
-const api = '/myapi'
+const api = '/blogapi'
 import QS from 'qs'
 export const fetchApi = async (url, options = {}) => {
   try {

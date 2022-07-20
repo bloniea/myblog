@@ -1,10 +1,10 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" },
     {
-      "source": "/myapi/(.*)",
-      "destination": "/api/proxy"
-    }
+      "source": "/blogapi/:match*",
+      "destination": "https://myblog-nodejs.vercel.app/api/open/:match*"
+    },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }

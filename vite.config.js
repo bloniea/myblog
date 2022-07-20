@@ -34,11 +34,11 @@ export default defineConfig({
 
   server: {
     proxy: {
-      '/myapi': {
+      '/blogapi': {
         target: 'https://myblog-nodejs.vercel.app/api/open/',
         // target: 'https://api.bloniea.xyz/blogAdmin/api/open/',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/myapi/, '')
+        rewrite: (path) => path.replace(/^\/blogapi/, '')
       },
       '/github_api': {
         target: 'https://github.com/login/oauth/',
