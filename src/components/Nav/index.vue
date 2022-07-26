@@ -204,7 +204,19 @@ const listenEvent = (() => {
   document.addEventListener('scroll', fun)
   document.removeEventListener('scroll', fun, true)
 })()
-
+watch(
+  () => navNameShow.value,
+  () => {
+    const video = document.querySelector('video')
+    if (video) {
+      if (navNameShow.value) {
+        video.style.display = 'none'
+      } else {
+        video.style.display = 'block'
+      }
+    }
+  }
+)
 const route = useRoute()
 const getArticles = () => {
   const name = ref('')

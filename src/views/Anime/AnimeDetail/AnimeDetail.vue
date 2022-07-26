@@ -9,6 +9,8 @@
           preload="auto"
           playsinline="false"
           webkit-playsinline="false"
+          x5-video-player-type="h5-page"
+          crossorigin="anonymous"
         >
           <source
             :src="anime.list.content[episodesIndex].episode"
@@ -113,9 +115,7 @@
           </div>
         </transition>
       </div>
-      <div class="tip">
-        温馨提示：视频很大，不支持mvk格式的浏览器无法播放，移动端大部分国产浏览器劫持了视频元素的问题，暂时没有找到解决方案
-      </div>
+      <div class="tip">温馨提示：视频很大，不支持mvk格式的浏览器无法播放</div>
       <div class="title">安达与岛村</div>
       <el-tabs type="border-card">
         <el-tab-pane label="剧情概要">
@@ -272,7 +272,7 @@ const getAnime = async () => {
 getAnime()
 
 // 存放字幕文件真实地址
-const url = 'https://cloud.bloniea.xyz/library/myblog/'
+// const url = 'https://cloud.bloniea.xyz/library/myblog/'
 // 显示字幕与否
 const subtitles = ref(true)
 // 字幕方法实例
@@ -295,23 +295,24 @@ const episodesIndex = ref(setEpisodesIndex())
 // 并把每项格式化为代理地址
 const strToArr = (str) => {
   const arr = str.split(',')
-  return arr.map((item) => {
-    return item.replace(url, '/blogLibrary/')
-  })
+  // return arr.map((item) => {
+  //   return item.replace(url, '/blogLibrary/')
+  // })
+  return arr
 }
 /*
  ** ass文件需要跨域格式化为代理地址
  ** https://cloud.bloniea.xyz/library/myblog/1.ass --- /blogLibrary/1.ass
  */
 const getSubUrl = (t) => {
-  let src = ''
-  if (anime.list.content[episodesIndex.value][t]) {
-    src = anime.list.content[episodesIndex.value][t].replace(
-      url,
-      '/blogLibrary/'
-    )
-  }
-  return src
+  // let src = ''
+  // if (anime.list.content[episodesIndex.value][t]) {
+  //   src = anime.list.content[episodesIndex.value][t].replace(
+  //     url,
+  //     '/blogLibrary/'
+  //   )
+  // }
+  return anime.list.content[episodesIndex.value][t]
 }
 
 // 初始化字幕方法
@@ -324,7 +325,7 @@ const loadSubtitles = () => {
       fonts: strToArr(anime.list.fonts),
       debug: false,
       workerUrl:
-        '/blogLibrary/JavascriptSubtitlesOctopus/dist/js/subtitles-octopus-worker.js',
+        'http://cdn.bloniea.ml/js/JavascriptSubtitlesOctopus/js/subtitles-octopus-worker.js',
     }
     subtitlesInstance.value = new SubtitlesOctopus(options)
 

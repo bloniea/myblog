@@ -33,6 +33,7 @@ export default defineConfig({
   },
 
   server: {
+    host: '0.0.0.0',
     proxy: {
       '/blogapi': {
         target: 'https://blogapi.bloniea.ml/api/open/',
