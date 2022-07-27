@@ -51,10 +51,10 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/gitee_api/, '')
       },
-      '/blogLibrary': {
-        target: 'https://cloud.bloniea.xyz/library/myblog/',
+      '/mycdn': {
+        target: 'https://cdn.bloniea.ml/',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/blogLibrary/, '')
+        rewrite: (path) => path.replace(/^\/mycdn/, '')
       }
     },
 

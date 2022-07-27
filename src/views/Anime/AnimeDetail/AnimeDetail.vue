@@ -271,8 +271,6 @@ const getAnime = async () => {
 }
 getAnime()
 
-// 存放字幕文件真实地址
-// const url = 'https://cloud.bloniea.xyz/library/myblog/'
 // 显示字幕与否
 const subtitles = ref(true)
 // 字幕方法实例
@@ -292,26 +290,13 @@ const setEpisodesIndex = () => {
 const episodesIndex = ref(setEpisodesIndex())
 
 // 格式化字体数据格式 返回的是字符串要转数组
-// 并把每项格式化为代理地址
 const strToArr = (str) => {
   const arr = str.split(',')
-  // return arr.map((item) => {
-  //   return item.replace(url, '/blogLibrary/')
-  // })
   return arr
 }
-/*
- ** ass文件需要跨域格式化为代理地址
- ** https://cloud.bloniea.xyz/library/myblog/1.ass --- /blogLibrary/1.ass
- */
+
+// 获取字幕地址
 const getSubUrl = (t) => {
-  // let src = ''
-  // if (anime.list.content[episodesIndex.value][t]) {
-  //   src = anime.list.content[episodesIndex.value][t].replace(
-  //     url,
-  //     '/blogLibrary/'
-  //   )
-  // }
   return anime.list.content[episodesIndex.value][t]
 }
 
@@ -325,7 +310,7 @@ const loadSubtitles = () => {
       fonts: strToArr(anime.list.fonts),
       debug: false,
       workerUrl:
-        'https://cdn.bloniea.ml/js/JavascriptSubtitlesOctopus/js/subtitles-octopus-worker.js',
+        '/mycdn/js/JavascriptSubtitlesOctopus/js/subtitles-octopus-worker.js',
     }
     subtitlesInstance.value = new SubtitlesOctopus(options)
 
