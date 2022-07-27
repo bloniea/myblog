@@ -2,7 +2,7 @@ const config = {
   loading: 'https://cloud.bloniea.xyz/images/loading.gif',
   defaultImgUrl: 'https://cloud.bloniea.xyz/images/QQ202202112105073c3b326c7ae7c45a.png',
   avatar: 'https://cloud.bloniea.xyz/images/avatar.png',
-  url: 'https://bloniea.xyz/',
+  url: 'https://bloniea.ml/',
   title: 'bloniea|可愛くなりたい',
   auth: {
     gitee: {
@@ -22,7 +22,7 @@ const config = {
       api: 'https://api.github.com/'
     },
     // redirect_uri: 'http://localhost:3000/',
-    redirect_uri: 'https://bloniea.xyz/',
+    redirect_uri: 'https://bloniea.ml/',
   },
   avatar_error: 'https://cloud.bloniea.xyz/images/avatar_error.png',
   avatar_default: 'https://cloud.bloniea.xyz/images/default_avatar.png',
