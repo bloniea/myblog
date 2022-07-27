@@ -325,7 +325,7 @@ const loadSubtitles = () => {
       fonts: strToArr(anime.list.fonts),
       debug: false,
       workerUrl:
-        'http://cdn.bloniea.ml/js/JavascriptSubtitlesOctopus/js/subtitles-octopus-worker.js',
+        'https://cdn.bloniea.ml/js/JavascriptSubtitlesOctopus/js/subtitles-octopus-worker.js',
     }
     subtitlesInstance.value = new SubtitlesOctopus(options)
 
