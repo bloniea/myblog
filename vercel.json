@@ -6,8 +6,8 @@
       "destination": "https://blogapi.bloniea.ml/api/open/:match*"
     },
     {
-      "source": "/blogLibrary/:match*",
-      "destination": "https://cloud.bloniea.xyz/library/myblog/:match*"
+      "source": "/mycdn/:match*",
+      "destination": "https://cdn.bloniea.ml/:match*"
     },
 
     { "source": "/(.*)", "destination": "/" }
