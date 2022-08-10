@@ -108,7 +108,6 @@
           </div>
         </transition>
       </div>
-      <div class="tip">温馨提示：视频很大，不支持mvk格式的浏览器无法播放</div>
       <div class="title">安达与岛村</div>
       <el-tabs type="border-card">
         <el-tab-pane label="剧情概要">
