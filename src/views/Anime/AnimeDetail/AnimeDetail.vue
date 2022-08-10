@@ -16,13 +16,6 @@
             :src="anime.list.content[episodesIndex].episode"
             type="video/mp4"
           />
-          <track
-            kind="captions"
-            srclang="中文"
-            default
-            v-if="getSubUrl('vtt')"
-            :src="getSubUrl('vtt')"
-          />
 
           <p class="vjs-no-js">
             To view this video please enable JavaScript, and consider upgrading
@@ -270,14 +263,13 @@ const getAnime = async () => {
   }
 }
 getAnime()
-
-// 显示字幕与否
-const subtitles = ref(true)
-// 字幕方法实例
-let subtitlesInstance = ref(null)
+// 表示第几集
+const episodesIndex = ref(0)
 // 获取保存的集数
 const setEpisodesIndex = () => {
-  const loachEpisodesIndex = window.localStorage.getItem('episodesIndex')
+  const loachEpisodesIndex = window.localStorage.getItem(
+    anime.list._id + '-index'
+  )
   if (
     loachEpisodesIndex &&
     Number(loachEpisodesIndex) == Number(loachEpisodesIndex)
@@ -285,42 +277,6 @@ const setEpisodesIndex = () => {
     return Number(loachEpisodesIndex)
   } else {
     return 0
-  }
-}
-const episodesIndex = ref(setEpisodesIndex())
-
-// 格式化字体数据格式 返回的是字符串要转数组
-const strToArr = (str) => {
-  const arr = str.split(',')
-  return arr
-}
-
-// 获取字幕地址
-const getSubUrl = (t) => {
-  return anime.list.content[episodesIndex.value][t]
-}
-
-// 初始化字幕方法
-const loadSubtitles = () => {
-  if (subtitles.value) {
-    const v = document.getElementsByTagName('video')[0]
-    const options = {
-      video: v,
-      subUrl: getSubUrl('ass'),
-      fonts: strToArr(anime.list.fonts),
-      debug: false,
-      workerUrl:
-        '/mycdn/js/JavascriptSubtitlesOctopus/js/subtitles-octopus-worker.js',
-    }
-    subtitlesInstance.value = new SubtitlesOctopus(options)
-
-    subtitlesInstance.value.onReadyEvent = () => {
-      // console.log(123)
-    }
-  } else {
-    if (subtitlesInstance.value && subtitlesInstance.value.dispose) {
-      subtitlesInstance.value.dispose()
-    }
   }
 }
 
@@ -339,6 +295,7 @@ const player = ref('')
 // video dom
 const myVideo = ref(null)
 const initPlur = async () => {
+  episodesIndex.value = setEpisodesIndex()
   // 初始化plyr video
   player.value = new Plyr(myVideo.value, {
     keyboard: { focused: false, global: true },
@@ -372,7 +329,7 @@ const initPlur = async () => {
       nextEpisode()
     }
   })
-
+  // 保存进度
   player.value.on('timeupdate', () => {
     localStorage.setItem(
       anime.list._id + episodesIndex.value,
@@ -381,42 +338,14 @@ const initPlur = async () => {
   })
 }
 const videoPlay = () => {
-  if (subtitles.value) {
-    subtitlesInstance.value.onReadyEvent = () => {
-      player.value.play()
-    }
-  } else {
-    player.value.play()
-  }
+  player.value.play()
 }
 
 // plyr 视频播放器就绪
 
 const plyrReady = () => {
   const controlBar = document.getElementsByClassName('plyr__controls')[0]
-  // 添加字幕按钮
-  const subtitlesBtn = document.createElement('div')
-  subtitlesBtn.className = 'subtitles-btn '
-  subtitlesBtn.innerHTML = `<button class=" my-subtitles-btn plyr__controls__item plyr__control">字幕</button><div class="slash slashNode"></div>`
-  const plyrSetting = document.getElementsByClassName('plyr__menu')[0]
-  controlBar.insertBefore(subtitlesBtn, plyrSetting)
-  const slash = document.getElementsByClassName('slashNode')[0]
 
-  slash.className = subtitles.value ? ' slashNode' : 'slash slashNode '
-  // 点击字幕以显示隐藏
-  subtitlesBtn.addEventListener('click', () => {
-    subtitles.value = !subtitles.value
-    // 加载ass字幕
-    if (SubtitlesOctopus) loadSubtitles()
-  })
-  // 字幕的图标变化
-  watch(
-    () => subtitles.value,
-    (val) => {
-      const slash = document.getElementsByClassName('slashNode')[0]
-      slash.className = val ? ' slashNode' : 'slash slashNode '
-    }
-  )
   // 下一集按钮
   const nextBnt = document.createElement('button')
   nextBnt.className = 'next-btn plyr__controls__item plyr__control'
@@ -446,8 +375,7 @@ const plyrReady = () => {
 
   // 设置video标题
   setVideoTitle()
-  // 加载ass字幕
-  if (SubtitlesOctopus) loadSubtitles()
+
   plyrTouch()
   videoPlay()
   // 获取播放进度
@@ -467,25 +395,24 @@ const plyrReady = () => {
   //   console.log('playing')
   // })
 }
+// 选集
 const switchEpisode = (i) => {
   episodesIndex.value = i
   pluyrSwitchEpisode()
+  window.localStorage.setItem(anime.list._id + '-index', episodesIndex.value)
 }
+// 下一集
 const nextEpisode = () => {
   if (episodesIndex.value >= anime.list.content.length - 1) {
     episodesIndex.value = 0
   } else {
     episodesIndex.value = episodesIndex.value + 1
   }
+  window.localStorage.setItem(anime.list._id + '-index', episodesIndex.value)
   pluyrSwitchEpisode()
 }
 // 换集
 const pluyrSwitchEpisode = async () => {
-  // 删除字幕
-  await subtitlesInstance.value.freeTrack(getSubUrl('ass'))
-  window.localStorage.setItem('episodesIndex', episodesIndex.value)
-  // 更换字幕
-  await subtitlesInstance.value.setTrackByUrl(getSubUrl('ass'))
   player.value.source = {
     type: 'video',
     sources: [
@@ -495,9 +422,6 @@ const pluyrSwitchEpisode = async () => {
       },
     ],
   }
-  // if (player.value.paused ) {
-  //   player.value.play()
-  // }
 }
 
 // 秒转分钟
@@ -655,9 +579,6 @@ const plyrTouch = (e) => {
   }
 }
 onBeforeUnmount(() => {
-  if (subtitlesInstance.value && subtitlesInstance.value.dispose) {
-    subtitlesInstance.value.dispose()
-  }
   if (player.value && player.value.destroy) {
     player.value.destroy()
   }
