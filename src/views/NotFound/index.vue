@@ -2,9 +2,7 @@
   <div class="error_404">
     <MyContainer>
       <div class="img">
-        <el-image
-          src="https://cloud.bloniea.xyz/images/20220228210845.jpg"
-        ></el-image>
+        <el-image :src="config.img_404"></el-image>
       </div>
       <div class="title">抱歉~没有此页面哦~</div>
       <el-button @click="$router.push('/home')"> 返回首页 </el-button>
@@ -14,6 +12,7 @@
 
 <script setup>
 import MyContainer from '@/components/MyContainer/index.vue'
+import config from '@/config'
 </script>
 
 <style lang="stylus" scoped>

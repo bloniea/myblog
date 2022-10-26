@@ -3,19 +3,14 @@
     <div class="nav">
       <div class="title">
         <div class="logo" @click="$router.push('/home')">
-          <img src="https://cloud.bloniea.xyz/images/logo.png" />
+          <img :src="config.logo_url" />
         </div>
         <!-- bloniea -->
       </div>
       <!-- pc导航菜单 -->
       <div class="nav-names">
         <ul>
-          <li
-            v-for="menu in menus"
-            :key="menu.id"
-            @click="toPage(menu.name)"
-            :class="menu.class"
-          >
+          <li v-for="menu in menus" :key="menu.id" @click="toPage(menu.name)" :class="menu.class">
             <i :class="'iconfont' + ' ' + menu.icon"></i>{{ menu.label }}
           </li>
         </ul>
@@ -23,12 +18,7 @@
       <!-- app导航菜单 -->
       <div class="nav-names-app" v-if="navNameShow">
         <ul>
-          <li
-            v-for="menu in menus"
-            :key="menu.id"
-            @click.stop="toPage(menu.name)"
-            :class="menu.class"
-          >
+          <li v-for="menu in menus" :key="menu.id" @click.stop="toPage(menu.name)" :class="menu.class">
             <i :class="'iconfont' + ' ' + menu.icon"></i>{{ menu.label }}
           </li>
         </ul>
@@ -36,32 +26,16 @@
       <!-- 菜单显示按钮和搜索按钮 -->
       <div class="option">
         <div class="search">
-          <el-input
-            v-model="keyword"
-            placeholder="search"
-            :suffix-icon="Search"
-            @keyup.enter="getArticles"
-          />
+          <el-input v-model="keyword" placeholder="search" :suffix-icon="Search" @keyup.enter="getArticles" />
         </div>
 
         <div class="user">
           <el-dropdown>
-            <el-avatar
-              :size="40"
-              :src="userinfo.avatar_url"
-              v-if="loginStatus"
-              @click="toMe"
-            >
+            <el-avatar :size="40" :src="userinfo.avatar_url" v-if="loginStatus" @click="toMe">
               <img :src="config.avatar_error" />
             </el-avatar>
 
-            <el-avatar
-              :size="50"
-              :src="config.avatar_default"
-              v-else
-              vLoading
-              ref="avatarLoad"
-            >
+            <el-avatar :size="50" :src="config.avatar_default" v-else vLoading ref="avatarLoad">
               <img :src="config.avatar_error" />
             </el-avatar>
 
@@ -71,9 +45,7 @@
                 <el-dropdown-item @click="logout">退出 </el-dropdown-item>
               </el-dropdown-menu>
               <el-dropdown-menu v-else>
-                <el-dropdown-item @click="isShowLoginDialog"
-                  >登录</el-dropdown-item
-                >
+                <el-dropdown-item @click="isShowLoginDialog">登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -89,14 +61,8 @@
         <!-- 登录表单 -->
         <div class="login-input">
           <div class="login-pc">
-            <el-dialog
-              v-model="loginDialogVisible"
-              title="请登录"
-              width="30%"
-              center
-              custom-class="login"
-              @close="closeLogin"
-            >
+            <el-dialog v-model="loginDialogVisible" title="请登录" width="30%" center custom-class="login"
+              @close="closeLogin">
               <div class="login-btns">
                 <div class="gitee">
                   <el-button @click="gitee_github('gitee')">gitee</el-button>
@@ -113,14 +79,8 @@
             </el-dialog>
           </div>
           <div class="login-app">
-            <el-dialog
-              v-model="loginDialogVisible"
-              title="请登录"
-              width="70%"
-              center
-              custom-class="login"
-              @close="closeLogin"
-            >
+            <el-dialog v-model="loginDialogVisible" title="请登录" width="70%" center custom-class="login"
+              @close="closeLogin">
               <div class="login-btns">
                 <div class="gitee">
                   <el-button @click="gitee_github('gitee')">gitee</el-button>
@@ -235,10 +195,10 @@ const getArticles = () => {
 const store = new useStore()
 // 登录
 const loginDialogVisible = computed({
-  get() {
+  get () {
     return store.state.isShowLogin
   },
-  set(v) {
+  set (v) {
     store.commit('setIsShowLogin', v)
   },
 })
