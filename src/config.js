@@ -32,13 +32,14 @@ const config = {
     { title: 'bloniea <span style="text-decoration:line-through">一个全栈工程师</span>前端小白' },
     { title: 'ユリの騎士' },
     { title: '何以解忧,唯有百合' },
-    { title: '你，去祭典了吧，私の知らない女の子と一緒に' },
+    { title: '联系邮箱:bloniea@qq.com' },
 
   ],
   contacts: [
     { url: 'https://gitee.com/bloniea', img_url: 'https://image-cdn.bloniea.ml/images1/gitee.png' },
     { url: 'https://github.com/bloniea', img_url: 'https://image-cdn.bloniea.ml/images1/GitHub.png' },
-    { url: 'http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=tdfZ2tvc0NT1xMSb1trY"', img_url: 'https://image-cdn.bloniea.ml/images1/Email.png' },
+    // { url: 'tencent://message/?uin=2738431243', img_url: 'https://image-cdn.bloniea.ml/images1/GitHub.png' },
+    // { url: 'http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=tdfZ2tvc0NT1xMSb1trY"', img_url: 'https://image-cdn.bloniea.ml/images1/Email.png' },
   ],
   tools: [
     { img_url: "https://image-cdn.bloniea.ml/images1/1000-2.jpg", router_name: "Reg", title: "正则表达式", subtitle: "在线测试正则表达式" },
