@@ -4,7 +4,7 @@
     <router-view v-if="route.meta.anime"></router-view>
     <div class="anime" v-else>
       <MyContainer>
-        <div class="tip gradient-title">女生之间不可能的故事</div>
+        <div class="tip gradient-title">可爱的女孩子可是无所不能的哦</div>
         <div class="container">
           <div
             class="list bg-shadow"
