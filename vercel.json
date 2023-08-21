@@ -1,17 +1,17 @@
 {
   "version": 2,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/blogapi/:path*",
-      "destination": "https://blogapi.bloniea.com//api/open/:path*"
+      "src": "/blogapi/(.*)",
+      "dest": "https://blogapi.bloniea.com/api/open/$1"
     },
     {
-      "source": "/mycdn/:path*",
-      "destination": "https://cdn.bloniea.com/:path*"
+      "src": "/mycdn/(.*)",
+      "dest": "https://cdn.bloniea.com/$1"
     },
     {
-      "source": "/(.*)",
-      "destination": "/"
+      "src": "/(.*)",
+      "dest": "/"
     }
   ]
 }
