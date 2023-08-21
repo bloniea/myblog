@@ -36,7 +36,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/blogapi': {
-        target: 'https://blogapi.bloniea.ml/api/open/',
+        target: 'https://blogapi.bloniea.com//api/open/',
         // target: 'https://api.bloniea.xyz/blogAdmin/api/open/12',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/blogapi/, '')
@@ -52,7 +52,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/gitee_api/, '')
       },
       '/mycdn': {
-        target: 'https://cdn.bloniea.ml/',
+        target: 'https://cdn.bloniea.com/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/mycdn/, '')
       }

@@ -3,13 +3,15 @@
   "rewrites": [
     {
       "source": "/blogapi/:match*",
-      "destination": "https://blogapi.bloniea.ml/api/open/:match*"
+      "destination": "https://blogapi.bloniea.com//api/open/:match*"
     },
     {
       "source": "/mycdn/:match*",
-      "destination": "https://cdn.bloniea.ml/:match*"
+      "destination": "https://cdn.bloniea.com/:match*"
     },
-
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ]
 }
