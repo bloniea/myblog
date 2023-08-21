@@ -2,12 +2,12 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/blogapi/:match*",
-      "destination": "https://blogapi.bloniea.com//api/open/:match*"
+      "source": "/blogapi/:path*",
+      "destination": "https://blogapi.bloniea.com//api/open/:path*"
     },
     {
-      "source": "/mycdn/:match*",
-      "destination": "https://cdn.bloniea.com/:match*"
+      "source": "/mycdn/:path*",
+      "destination": "https://cdn.bloniea.com/:path*"
     },
     {
       "source": "/(.*)",
