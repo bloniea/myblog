@@ -8,11 +8,8 @@
     {
       "src": "/mycdn/(.*)",
       "dest": "https://cdn.bloniea.com/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
     }
-  ]
+  ],
+  "rewrites": [{ "source": "/:path*", "destination": "/index.html" }]
 
 }
