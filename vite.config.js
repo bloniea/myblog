@@ -1,11 +1,9 @@
-import { defineConfig } from 'vite'
-import path from "path";
-import vue from '@vitejs/plugin-vue'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-
-
+import { defineConfig } from "vite"
+import path from "path"
+import vue from "@vitejs/plugin-vue"
+import AutoImport from "unplugin-auto-import/vite"
+import Components from "unplugin-vue-components/vite"
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,52 +15,48 @@ export default defineConfig({
     }),
     Components({
       resolvers: [ElementPlusResolver()],
-    })
+    }),
   ],
   css: {
     preprocessorOptions: {
       stylus: {
-        imports: [path.resolve(__dirname, './src/Styles/variable.styl')],
-      }
-    }
+        imports: [path.resolve(__dirname, "./src/Styles/variable.styl")],
+      },
+    },
   },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
-    }
+    },
   },
 
   server: {
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     proxy: {
-      '/blogapi': {
-        target: 'https://blogapi.bloniea.com//api/open/',
+      "/blogapi": {
+        target: "http://121.37.40.51:6660/api/open/",
         // target: 'https://api.bloniea.xyz/blogAdmin/api/open/12',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/blogapi/, '')
+        rewrite: (path) => path.replace(/^\/blogapi/, ""),
       },
-      '/github_api': {
-        target: 'https://github.com/login/oauth/',
+      "/github_api": {
+        target: "https://github.com/login/oauth/",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/github_api/, '')
+        rewrite: (path) => path.replace(/^\/github_api/, ""),
       },
-      '/gitee_api': {
-        target: 'https://gitee.com/oauth/',
+      "/gitee_api": {
+        target: "https://gitee.com/oauth/",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/gitee_api/, '')
+        rewrite: (path) => path.replace(/^\/gitee_api/, ""),
       },
-      '/mycdn': {
-        target: 'https://cdn.bloniea.com/',
+      "/mycdn": {
+        target: "https://cdn.bloniea.com/",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/mycdn/, '')
-      }
+        rewrite: (path) => path.replace(/^\/mycdn/, ""),
+      },
     },
-
   },
-
-
 })
-
 
 // module.exports = {
 //   plugins: [vue(),
@@ -93,7 +87,6 @@ export default defineConfig({
 //     }
 //   }
 // }
-
 
 // "@vitejs/plugin-vue": "^2.0.1",
 // "rollup-plugin-external-globals": "^0.6.1",
