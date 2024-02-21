@@ -34,7 +34,7 @@ export default defineConfig({
     host: "0.0.0.0",
     proxy: {
       "/blogapi": {
-        target: "http://121.37.40.51:6660/api/open/",
+        target: "https://blogapi.bloniea.com/api/open/",
         // target: 'https://api.bloniea.xyz/blogAdmin/api/open/12',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/blogapi/, ""),
