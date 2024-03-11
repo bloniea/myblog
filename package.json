@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && copyfiles -u 0 _redirects ./dist",
     "preview": "vite preview",
     "postinstall": "patch-package"
   },
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.2.0",
+    "copyfiles": "^2.4.1",
     "patch-package": "^6.4.7",
     "png-to-ico": "^2.1.4",
     "unplugin-auto-import": "^0.6.1",
