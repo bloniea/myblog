@@ -1,0 +1,3 @@
+/blogapi/* https://blogapi.bloniea.com/api/open/:splat 200
+/github_api/* https://github.com/login/oauth/:splat 200
+/gitee_api/* https://gitee.com/oauth/:splat 200
